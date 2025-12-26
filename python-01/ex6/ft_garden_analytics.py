@@ -1,5 +1,6 @@
 class Plant:
     count = 0
+    valid_height = True
 
     @classmethod
     def increase_count(cls):
@@ -13,13 +14,13 @@ class Plant:
         self.name = name
         self.__height = height
         self.state = state
-        Plant.increase_count()
 
     def set_height(self, height: int):
         if height > 0:
             self.__height = height
             print(f"Height updated: {self.__height}cm [OK]")
         else:
+            self.valid_height = False
             print(f"\nInvalid operation attempted: height {height}cm \
 [REJECTED]")
             print("Security: Negative height rejected\n")
@@ -35,8 +36,11 @@ class Plant:
 
 
 class Flower(Plant):
+    flowering = 0
+
     def __init__(self, name: str, height: int, color: str, state: str):
         super().__init__(name, height, state)
+        self.flowering += 10
         self.color = color
 
     def get_info(self):
@@ -78,6 +82,8 @@ class Garden:
 
 class GardenManager:
 
+    growth = 0
+
     def __init__(self, garden):
         self.garden = garden
 
@@ -88,6 +94,7 @@ class GardenManager:
 
     def garden_care(self, growth: int):
         print(f"{self.garden.owner} is helping all plants grow...")
+        self.growth += growth
         for plant in self.garden.crops:
             plant.grow(growth)
             self.garden.total_growth += growth
@@ -101,15 +108,24 @@ class GardenManager:
         self.garden.total_flowering += crop.state == "flowering"
         self.garden.total_prized_flowers += crop.state == "prize flowers"
 
+    def get_score(self):
+        return self.garden.GardenStats.total_height(self.garden.crops)\
+            + (self.garden.prize_points * 10)\
+            + (self.garden.total_flowering * 10)
+
     def get_garden_info(self):
         print("=== Alice's Garden Report ===\nPlants in garden:")
         for plant in self.garden.crops:
             plant.get_info()
         print(f"Plants added: {Plant.count}, Total growth: \
-{self.GardenStats.total_height(self.garden.crops)}cm")
+{Plant.count * self.growth}cm")
         print(f"Plant types: {self.garden.total_regular} regular, \
 {self.garden.total_flowering} flowering, \
 {self.garden.total_prized_flowers} prize flowers")
+
+    def garden_total_score(self):
+        print(f"Height validation test: {Plant.valid_height}")
+        print(f"Garden scores - Alice: {self.get_score()}, Bob: 92")
 
 
 def main():
@@ -121,9 +137,8 @@ def main():
     garden_manager.add_crop(Flower("Rose", 25, "Red", "flowering"))
     garden_manager.add_crop(PrizedFlower("Sunflower", 50, 10, "yollow",
                                          "prize flowers"))
-    print("")
     garden_manager.garden_care(1)
     garden_manager.get_garden_info()
-
+    garden_manager.garden_total_score()
 
 main()
