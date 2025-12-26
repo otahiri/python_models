@@ -1,8 +1,19 @@
 class Plant:
+    count = 0
+
+    @classmethod
+    def increase_count(cls):
+        cls.count += 1
+
+    @classmethod
+    def get_count(cls):
+        return cls.count
+
     def __init__(self, name: str, height: int, state: str):
         self.name = name
         self.__height = height
         self.state = state
+        Plant.increase_count()
 
     def set_height(self, height: int):
         if height > 0:
@@ -54,7 +65,6 @@ cm")
 
 
 class Garden:
-    plant_count = 0
     total_growth = 0
     total_regular = 0
     total_flowering = 0
@@ -65,41 +75,55 @@ class Garden:
         self.owner = owner
         self.crops = []
 
-    def add_crop(self, crop: Plant):
-        self.crops.append(crop)
-        self.plant_count += 1
-        print(f"Added {crop.name} to {self.owner}'s\
- garden")
-        self.total_regular += crop.state == "regular"
-        self.total_flowering += crop.state == "flowering"
-        self.total_prized_flowers += crop.state == "prize flowers"
+
+class GardenManager:
+
+    def __init__(self, garden):
+        self.garden = garden
+
+    class GardenStats:
+        @staticmethod
+        def total_height(Plants):
+            return sum(p.get_height() for p in Plants)
 
     def garden_care(self, growth: int):
-        print(f"{self.owner} is helping all plants grow...")
-        for plant in self.crops:
+        print(f"{self.garden.owner} is helping all plants grow...")
+        for plant in self.garden.crops:
             plant.grow(growth)
-            self.total_growth += growth
+            self.garden.total_growth += growth
+
+    def add_crop(self, crop: Plant):
+        self.garden.crops.append(crop)
+        Plant.increase_count()
+        print(f"Added {crop.name} to {self.garden.owner}'s\
+ self.garden")
+        self.garden.total_regular += crop.state == "regular"
+        self.garden.total_flowering += crop.state == "flowering"
+        self.garden.total_prized_flowers += crop.state == "prize flowers"
 
     def get_garden_info(self):
         print("=== Alice's Garden Report ===\nPlants in garden:")
-        for plant in self.crops:
+        for plant in self.garden.crops:
             plant.get_info()
-        print(f"Plants added: {self.plant_count}, Total growth: \
-{self.total_growth}cm")
-        print(f"Plant types: {self.total_regular} regular, \
-{self.total_flowering} flowering, {self.total_prized_flowers} prize flowers")
+        print(f"Plants added: {Plant.count}, Total growth: \
+{self.GardenStats.total_height(self.garden.crops)}cm")
+        print(f"Plant types: {self.garden.total_regular} regular, \
+{self.garden.total_flowering} flowering, \
+{self.garden.total_prized_flowers} prize flowers")
 
 
 def main():
     print("=== Garden Management System Demo ===\n\n")
     alice_garden = Garden("Alice")
-    alice_garden.add_crop(Tree("Oak", 100, "regular"))
-    alice_garden.add_crop(Flower("Rose", 25, "Red", "flowering"))
-    alice_garden.add_crop(PrizedFlower("Sunflower", 50, 10, "yollow",
-                                       "prize flowers"))
+    garden_manager = GardenManager(alice_garden)
+
+    garden_manager.add_crop(Tree("Oak", 100, "regular"))
+    garden_manager.add_crop(Flower("Rose", 25, "Red", "flowering"))
+    garden_manager.add_crop(PrizedFlower("Sunflower", 50, 10, "yollow",
+                                         "prize flowers"))
     print("")
-    alice_garden.garden_care(1)
-    alice_garden.get_garden_info()
+    garden_manager.garden_care(1)
+    garden_manager.get_garden_info()
 
 
 main()
