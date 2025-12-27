@@ -1,4 +1,4 @@
-class GardenManagerclass:
+class GardenManager:
     class Garden:
         crops = []
 
@@ -15,6 +15,17 @@ class Plant:
         self.height = height
         self.age = age
 
+    def get_info(self):
+        print(f"- {self.name}: {self.height}cm")
+
+
+class Tree(Plant):
+    def __init__(self, name: str, height: int, age: int):
+        super().__init__(name, height, age)
+
+    def get_info(self):
+        print(f"- {self.name} {self.__class__.__name__}: {self.height}cm")
+
 
 class Flower(Plant):
     def __init__(self, name: str, height: int, age: int, color: str):
@@ -22,4 +33,13 @@ class Flower(Plant):
         self.color = color
 
 
-class Prized(Flower)  g
+class Prized(Flower):
+    def __init__(self, name: str, height: int, age: int, color: str,
+                 points: int):
+        super().__init__(name, height, age, color)
+        self.points = points
+
+
+def main():
+    alice_garden = GardenManager.Garden("Alice")
+    alice_garden.add_crop(Plant(""))
