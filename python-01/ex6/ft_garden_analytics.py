@@ -1,7 +1,6 @@
 class GardenManager:
     class Garden:
         crops = []
-        score = 0
         garden_stats = {
             "regular": 0,
             "flowering": 0,
@@ -11,6 +10,7 @@ class GardenManager:
 
         def __init__(self, owner: str):
             self.owner = owner
+            self.score = 0
 
     @staticmethod
     def add_crop(garden: Garden, plant):
@@ -56,10 +56,13 @@ class GardenManager:
     @staticmethod
     def total_score(gardens):
         for garden in gardens:
-            garden.score += sum(garden.height for garden in garden.crops.height)
+            garden.score += sum(plant.height for plant in garden.crops)
             garden.score += len(garden.crops) * 10
-            garden.score += sum(point for point in garden.crops.points)
-        scores = " ".join([f"{garden.owner}: {garden.score}" for garden in gardens])
+            garden.score += sum(
+                plant.points for plant in garden.crops
+                if isinstance(plant, PrizedFlower)
+            )
+        scores = " ".join([f"{g.owner}: {g.score}" for g in gardens])
         print(f"Garden scores - {scores}")
 
 
@@ -100,6 +103,7 @@ def main():
     gardens = []
     print("=== Garden Management System Demo ===\n")
     gardens.append(GardenManager.Garden("Alice"))
+    gardens.append(GardenManager.Garden("Bob"))
     oak = Plant("Oak Tree", 100)
     GardenManager.add_crop(gardens[0], oak)
     oak.added_msg()
@@ -109,6 +113,8 @@ def main():
     sunflower = PrizedFlower("Sunflower", 50, "yellow", 10)
     GardenManager.add_crop(gardens[0], sunflower)
     sunflower.added_msg()
+    birch = Plant("Birch Tree", 92)
+    GardenManager.add_crop(gardens[1], birch)
     GardenManager.plant_care(gardens[0], 1)
     GardenManager.print_info(gardens[0])
     print(f"Plants added: {len(gardens[0].crops)}, Total growth: \
@@ -116,7 +122,6 @@ def main():
     GardenManager.print_stats(gardens[0])
     GardenManager.height_validation(gardens[0])
     GardenManager.total_score(gardens)
-
 
 
 main()
