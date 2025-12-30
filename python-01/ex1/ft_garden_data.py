@@ -1,7 +1,9 @@
 class Plant:
     """
-    a method that construct the class,
-    it sets up the info about the plant
+    plant class the has 3 attributes
+    name: the name of the plant
+    height: the height of the plant
+    age: the age of the plant
     """
     def __init__(self, name: str, height: int, age: int):
         self.name = name

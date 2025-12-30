@@ -1,4 +1,10 @@
 class Plant:
+    """
+    plant class that has 3 attributes
+    name: the name of the plant
+    age: the age of the plant in days
+    height: the height of the plant in cm
+    """
     def __init__(self, name: str, age: int, height: int):
         self.name = name
         print(f"Plant created: {self.name}")
@@ -6,6 +12,10 @@ class Plant:
         self.set_age(age)
 
     def set_age(self, age: int):
+        """
+        set the age of the plant
+        rejects all invalid ages
+        """
         if age > 0:
             self.__age = age
 
@@ -15,9 +25,16 @@ class Plant:
             print("Security: Negative age rejected")
 
     def get_age(self):
+        """
+        return the age of the plant
+        """
         return self.__age
 
     def set_height(self, height: int):
+        """
+        set the height of the plant
+        rejects all invalid height
+        """
         if height > 0:
             self.__height = height
             print(f"Height updated: {self.__height}cm [OK]")
@@ -27,9 +44,15 @@ class Plant:
             print("Security: Negative height rejected\n")
 
     def get_height(self):
+        """
+        return the height of the plant
+        """
         return self.__height
 
     def get_info(self):
+        """
+        print info about the plant such as name age and height
+        """
         print(f"Current plant: Rose ({self.get_height()}cm,\
  {self.get_age()} days)")
 

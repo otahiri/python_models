@@ -1,13 +1,10 @@
 class Plant:
     """
-        class Plant that has age height and name
+    class Plant that has age height and name
     """
     count = 0
 
     def __init__(self, name: str, height: int, ages: int):
-        """
-            class constructor to make the class object
-        """
         Plant.count += 1
         self.name = name
         self.height = height
@@ -16,19 +13,21 @@ class Plant:
 
     def grow(self, days: int):
         """
-            function to stimulate height increase in days given
+        function to stimulate height increase in days given
+        days: age in days
         """
         self.height += days
 
     def age(self, days: int):
         """
-            simulate the age increase in days given
+        simulate the age increase in days given
+        days: age in days
         """
         self.ages += days
 
     def get_info(self):
         """
-            get the info about the plant
+        get the info about the plant
         """
         print(f"{self.name}: {self.height}cm, {self.ages} days old")
 
