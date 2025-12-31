@@ -57,13 +57,14 @@ def garden_operations(error_idx: int):
 
 
 def test_error_types():
-    print("=== Garden Error Types Demo ===")
     garden_operations(0)
     garden_operations(1)
     garden_operations(2)
     garden_operations(3)
     garden_operations(4)
+
+
+if __name__ == "__main__":
+    print("=== Garden Error Types Demo ===")
+    test_error_types()
     print("\nAll error types tested successfully!")
-
-
-test_error_types()
