@@ -1,25 +1,36 @@
 class Plant:
     """
-    class Plant that has age height and name
+    class Plant
+    attributes:
+    name: the name of the plant
+    height: the height of the plant in cm
+    age: the age of the plant in days
     """
     def __init__(self, name: str, height: int, ages: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        height: the height of the plant in cm
+        ages: the age of the plant
+        """
         self.name = name
         self.height = height
         self.ages = ages
 
-    def grow(self, days: int):
+    def grow(self):
         """
         function to stimulate height increase in days given
         days: the time in days
         """
-        self.height += days
+        self.height += 1
 
-    def age(self, days: int):
+    def age(self):
         """
         simulate the age increase in days given
         days: the time in days
         """
-        self.ages += days
+        self.ages += 1
 
     def get_info(self, time) -> None:
         """
@@ -30,9 +41,12 @@ class Plant:
         print(f"{self.name}: {self.height}cm, {self.ages} days old")
 
 
+count = 1
 rose = Plant("Rose", 25, 30)
-rose.get_info(rose.ages)
-rose.age(6)
-rose.grow(6)
-rose.get_info(7)
+rose.get_info(count)
+for i in [1, 2, 3, 4, 5, 6]:
+    rose.age()
+    rose.grow()
+    count += 1
+rose.get_info(count)
 print("Growth this week: +6cm")

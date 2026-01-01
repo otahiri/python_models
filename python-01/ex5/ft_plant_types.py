@@ -1,6 +1,3 @@
-PI = 3.141592653589793
-
-
 class Plant:
     """
     plant class that has 3 attributes
@@ -9,6 +6,13 @@ class Plant:
     height: the height of the plant
     """
     def __init__(self, name: str, age: int, height: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        age: the age of the plant
+        height: the height of the plant
+        """
         self.name = name
         self.__age = 0
         self.__height = 0
@@ -37,9 +41,19 @@ class Flower(Plant):
     sub class of the super class Plant
     has the added attribute color of the flower
     """
-    def __init__(self, name: str, color: str, age: int, height: int):
+    def __init__(self, name: str, color: str, age: int, height: int,
+                 blooming: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        color: the color of the plant
+        age: the age of the plant
+        height: the height of the plant
+        """
         super().__init__(name, age, height)
         self.color = color
+        self.blooming = blooming
 
     def get_info(self):
         """
@@ -47,7 +61,8 @@ class Flower(Plant):
         """
         print(f"\n{self.name} ({__class__.__name__}): {self.get_height()}cm,  \
 days, {self.color} color")
-        print(f"{self.name} is blooming beautifully!")
+        if self.blooming:
+            print(f"{self.name} is blooming beautifully!")
 
 
 class Tree(Plant):
@@ -56,6 +71,14 @@ class Tree(Plant):
     has the added of diameter of the tree
     """
     def __init__(self, name: str, diameter: int, age: int, height: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        diameter: the diameter of the tree
+        age: the age of the plant
+        height: the height of the plant
+        """
         super().__init__(name, age, height)
         self.diameter = diameter
 
@@ -67,7 +90,7 @@ class Tree(Plant):
         print(f"\n{self.name} ({__class__.__name__}): {self.get_height()}cm, \
 {self.get_age()} days, {self.diameter} diameter")
         num = int(self.get_height()) // 100
-        print(f"Oak provides {int(PI * (num**2))} square \
+        print(f"Oak provides {int(3.141592653589793 * (num**2))} square \
 meters of shade")
 
 
@@ -78,10 +101,20 @@ class Vegetable(Plant):
     vi: as in the vitamin the plant is rich int
     h_time: the harvest time
     """
-    def __init__(self, name: str, h_time: str, vi: str, age: int, height: int):
+    def __init__(self, name: str, h_time: str, nutrition: str, age: int,
+                 height: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        h_time: the harvest time of the plant
+        vi: the vitamin the plant is rich in
+        age: the age of the plant
+        height: the height of the plant
+        """
         super().__init__(name, age, height)
         self.harvest_time = h_time
-        self.vitamin = vi
+        self.vitamin = nutrition
 
     def get_info(self):
         """
@@ -94,7 +127,7 @@ class Vegetable(Plant):
 
 
 print("=== Garden Plant Types ===")
-rose = Flower("Rose", "Red", 30, 25)
+rose = Flower("Rose", "Red", 30, 25, 1)
 rose.get_info()
 oak = Tree("Oak", 50, 1825, 500)
 oak.get_info()

@@ -20,7 +20,9 @@ class GardenManager:
 
         def __init__(self, owner: str):
             """
-            initialize the class Garden
+            a constructor
+
+            owner: the name of the owner of the garden
             """
             self.owner = owner
             self.__score = 0
@@ -144,6 +146,12 @@ class Plant:
     height: the height of the plant
     """
     def __init__(self, name: str, height: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        height: the height of the plant
+        """
         self.name = name
         self.height = height
 
@@ -164,16 +172,24 @@ class Flower(Plant):
     """
     subclass of the Plant class same the super except it has color
     """
-    def __init__(self, name: str, height: int, color: str):
+    def __init__(self, name: str, height: int, color: str, blooming: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        height: the height of the plant
+        :param color: [TODO:description]
+        """
         super().__init__(name, height)
         self.color = color
+        self.blooming = blooming
 
     def get_info(self):
         """
         same as the super get_info but it prints color of the plant
         """
         print(f"- {self.name}: {self.height}cm, {self.color} flowers \
-(blooming)")
+({'blooming' if self.blooming else 'not blooming'})")
 
 
 class PrizedFlower(Flower):
@@ -181,8 +197,16 @@ class PrizedFlower(Flower):
     subclass of FLower but has points trait
     """
     def __init__(self, name: str, height: int, color: str,
-                 points: int):
-        super().__init__(name, height, color)
+                 points: int, blooming: int):
+        """
+        a constructor
+
+        name: the name of the plant
+        height: the height of the plant
+        color: the color of the plant
+        points: the points the prized plant has
+        """
+        super().__init__(name, height, color, blooming)
         self.points = points
 
     def get_info(self):
@@ -190,34 +214,28 @@ class PrizedFlower(Flower):
         same as the super get_info but prints Prize points
         """
         print(f"- {self.name}: {self.height}cm, {self.color} flowers \
-(blooming), Prize points: {self.points}")
+({'blooming' if self.blooming else 'not blooming'}), \
+Prize points: {self.points}")
 
 
-def main():
-    """
-        the main function that do the whole thing
-    """
-    gardens = []
-    print("=== Garden Management System Demo ===\n")
-    gardens.append(GardenManager.Garden("Alice"))
-    gardens.append(GardenManager.Garden("Bob"))
-    oak = Plant("Oak Tree", 100)
-    GardenManager.add_crop(gardens[0], oak)
-    oak.added_msg(gardens[0])
-    rose = Flower("Rose", 25, "red")
-    GardenManager.add_crop(gardens[0], rose)
-    rose.added_msg(gardens[0])
-    sunflower = PrizedFlower("Sunflower", 50, "yellow", 10)
-    GardenManager.add_crop(gardens[0], sunflower)
-    sunflower.added_msg(gardens[0])
-    birch = Plant("Birch Tree", 82)
-    GardenManager.add_crop(gardens[1], birch)
-    GardenManager.plant_care(gardens[0], 1)
-    GardenManager.print_info(gardens[0])
-    GardenManager.print_stats(gardens[0])
-    GardenManager.height_validation(gardens[0])
-    GardenManager.total_score(gardens)
-    GardenManager.get_total_garden(gardens)
-
-
-main()
+gardens = []
+print("=== Garden Management System Demo ===\n")
+gardens.append(GardenManager.Garden("Alice"))
+gardens.append(GardenManager.Garden("Bob"))
+oak = Plant("Oak Tree", 100)
+GardenManager.add_crop(gardens[0], oak)
+oak.added_msg(gardens[0])
+rose = Flower("Rose", 25, "red", 1)
+GardenManager.add_crop(gardens[0], rose)
+rose.added_msg(gardens[0])
+sunflower = PrizedFlower("Sunflower", 50, "yellow", 10, 0)
+GardenManager.add_crop(gardens[0], sunflower)
+sunflower.added_msg(gardens[0])
+birch = Plant("Birch Tree", 82)
+GardenManager.add_crop(gardens[1], birch)
+GardenManager.plant_care(gardens[0], 1)
+GardenManager.print_info(gardens[0])
+GardenManager.print_stats(gardens[0])
+GardenManager.height_validation(gardens[0])
+GardenManager.total_score(gardens)
+GardenManager.get_total_garden(gardens)
