@@ -14,7 +14,7 @@ class GardenError(Exception):
 
 
 class Plant:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name) -> None:
         self.name = name
         self.water = 0
         self.sun = 0
@@ -59,5 +59,31 @@ the limit (max is 10 and min is 1)")
 
     @staticmethod
     def check_plant_health(plant: Plant):
-        if plant.water < 2:
-            raise WaterError(f"Error checking {plant.name}: Water level {plant.water} is too high (max 10)")
+        try:
+            if plant.water < 2:
+                raise WaterError(f"Error checking {plant.name}: Water level {plant.water} is too low (min 1)")
+            elif plant.water > 10:
+                raise WaterError(f"Error checking {plant.name}: Water level {plant.water} is too high (max 10)")
+            elif plant.sun > 12:
+                raise WaterError(f"Error checking {plant.name}: Sunlight hours {plant.sun} is too long (max 12)")
+            elif plant.sun < 2:
+                raise WaterError(f"Error checking {plant.name}: Sunlight hours {plant.sun} is too short (min 12)")
+        except WaterError as we:
+            print(we)
+        except PlantError as pe:
+            print(pe)
+        except GardenError as ge:
+            print(ge)
+        finally:
+            print(f"{plant.name}: healthy (water: {plant.water}, sun: {plant.sun})")
+
+
+def test_garden_management():
+    print("Adding plants to garden...")
+    garden = GardenManager.Garden(100)
+    GardenManager.add_plant(garden, Plant("Tomato"))
+    GardenManager.add_plant(garden, Plant("Lettuce"))
+    GardenManager.add_plant(garden, Plant(None))
+
+
+test_garden_management()
