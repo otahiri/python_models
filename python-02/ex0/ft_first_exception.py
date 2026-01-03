@@ -10,6 +10,7 @@ def check_temperature(temp_str):
         if 40 < temp or temp < 0:
             raise ValueError
         print(f"Temperature {temp}°C is perfect for plants!")
+        return temp
     except ValueError:
         if all(n.isdigit() for n in temp_str):
             print(f"Error: {temp_str}°C is too hot for plants (max 40°C)")
