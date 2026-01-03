@@ -59,8 +59,8 @@ class Flower(Plant):
         """
         get the info of the plant such as age. color, name and height.
         """
-        print(f"\n{self.name} ({__class__.__name__}): {self.get_height()}cm,  \
-days, {self.color} color")
+        print(f"\n{self.name} ({__class__.__name__}): {self.get_height()}cm, \
+{self.get_age()} days, {self.color} color")
         if self.blooming:
             print(f"{self.name} is blooming beautifully!")
 
@@ -88,7 +88,7 @@ class Tree(Plant):
         and how big the shade it provides
         """
         print(f"\n{self.name} ({__class__.__name__}): {self.get_height()}cm, \
-{self.get_age()} days, {self.diameter} diameter")
+{self.get_age()} days, {self.diameter}cm diameter")
         num = int(self.get_height()) // 100
         print(f"Oak provides {int(3.141592653589793 * (num**2))} square \
 meters of shade")
@@ -127,7 +127,7 @@ class Vegetable(Plant):
 
 
 print("=== Garden Plant Types ===")
-rose = Flower("Rose", "Red", 30, 25, 1)
+rose = Flower("Rose", "red", 30, 25, 1)
 rose.get_info()
 oak = Tree("Oak", 50, 1825, 500)
 oak.get_info()

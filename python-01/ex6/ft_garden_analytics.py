@@ -114,8 +114,8 @@ class GardenManager:
             check if the height the plants inside the desired garden are valid
             garden: the desired garden
             """
-            print(f"\nheight_validation : \
-    {not any(plant.height < 0 for plant in garden.crops)}")
+            print(f"\nHeight validation test: \
+{not any(plant.height < 0 for plant in garden.crops)}")
 
         @staticmethod
         def total_score(gardens):
@@ -232,7 +232,7 @@ oak.added_msg(GardenManager.gardens[0])
 rose = FloweringPlant("Rose", 25, "red", 1)
 GardenManager.GardenStats.add_crop(GardenManager.gardens[0], rose)
 rose.added_msg(GardenManager.gardens[0])
-sunflower = PrizedFlower("Sunflower", 50, "yellow", 10, 0)
+sunflower = PrizedFlower("Sunflower", 50, "yellow", 10, 1)
 GardenManager.GardenStats.add_crop(GardenManager.gardens[0], sunflower)
 sunflower.added_msg(GardenManager.gardens[0])
 birch = Plant("Birch Tree", 82)

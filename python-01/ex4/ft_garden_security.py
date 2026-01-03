@@ -68,6 +68,6 @@ class Plant:
 
 
 print("=== Garden Security System ===")
-rose = Plant("Rose", 25, 30)
+rose = Plant("Rose", 30, 25)
 rose.set_height(-5)
 rose.get_info()

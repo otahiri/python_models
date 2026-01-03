@@ -37,7 +37,7 @@ class Plant:
         get the info about the plant
         time: current time in days
         """
-        print(f"=== Day {time}, ===")
+        print(f"=== Day {time} ===")
         print(f"{self.name}: {self.height}cm, {self.ages} days old")
 
 
