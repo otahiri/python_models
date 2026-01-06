@@ -20,6 +20,7 @@ class Plant:
         self.name = name if name else "Unknown"
         self.height = height if height else 0
         self.ages = ages if ages else 0
+        print(f"Created: {self.name} ({self.height}cm, {self.ages} days)")
 
     def grow(self, days: int):
         """
@@ -35,23 +36,11 @@ class Plant:
         """
         self.ages += days
 
-    def get_creation_info(self):
-        """
-        print info about the creation of the plant
-        """
-        print(f"Created: {self.name} ({self.height}cm, {self.ages} days)")
-
 
 print("=== Plant Factory Output ===")
-crops = {
-    1: ["Rose", 25, 30],
-    2: ["Oak", 200, 365],
-    3: ["Cactus", 5, 90],
-    4: ["Sunflower", 80, 45],
-    5: ["Fern", 15, 120]
-}
-for key in crops:
-    name, height, age = crops[key]
-    plant = Plant(name, height, age)
-    plant.get_creation_info()
+rose = Plant("Rose", 25, 30)
+oak = Plant("Oak", 200, 365)
+cactus = Plant("Cactus", 5, 90)
+sunflower = Plant("Sunflower", 80, 45)
+fern = Plant("Fern", 15, 120)
 print(f"\nTotal plants created: {Plant.count}")

@@ -49,4 +49,4 @@ for i in [1, 2, 3, 4, 5, 6]:
     rose.grow()
     count += 1
 rose.get_info(count)
-print("Growth this week: +6cm")
+print(f"Growth this week: +{count - 1}cm")

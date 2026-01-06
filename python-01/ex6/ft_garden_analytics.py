@@ -13,7 +13,12 @@ class GardenManager:
     """
     @classmethod
     def create_garden_network(cls, garden):
-        cls.gardens.append(garden)
+        """
+        add garden to the gardens managed by the manager
+
+        garden: the garden to add to gardens
+        """
+        cls.gardens += [garden]
 
     class Garden:
         """
@@ -58,16 +63,13 @@ class GardenManager:
             garden: the desired garden
             plant: the plant you wanna add
             """
-            garden.crops.append(plant)
+            garden.crops += [plant]
             if plant.__class__.__name__ == "Plant":
-                garden.garden_stats["regular"] =\
-                    garden.garden_stats.get("regular", 0) + 1
+                garden.garden_stats["regular"] += 1
             elif plant.__class__.__name__ == "Flower":
-                garden.garden_stats["flowring"] =\
-                    garden.garden_stats.get("flowring", 0) + 1
+                garden.garden_stats["flowering"] += 1
             if plant.__class__.__name__ == "PrizedFlower":
-                garden.garden_stats["prize flowers"] =\
-                    garden.garden_stats.get("prize flower", 0) + 1
+                garden.garden_stats["prize flower"] += 1
 
         @staticmethod
         def plant_care(garden, growth: int):
@@ -105,7 +107,7 @@ class GardenManager:
             for key in garden.garden_stats:
                 count = garden.garden_stats[key]
                 if count > 0:
-                    stats.append(f"{count} {key}")
+                    stats += [f"{count} {key}"]
             print("Plant types: ", " ".join(stats))
 
         @staticmethod
@@ -132,7 +134,7 @@ class GardenManager:
                 g.set_score(score + (sum(
                     p.points for p in g.crops if isinstance(p, PrizedFlower))))
                 score = g.get_score()
-                scores.append(f"{g.owner}: {score}")
+                scores += [f"{g.owner}: {score}"]
             print(f"Garden scores - {', '.join(scores)}")
 
         @staticmethod

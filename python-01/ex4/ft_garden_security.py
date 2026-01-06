@@ -13,8 +13,8 @@ class Plant:
         age: the age of the plant
         height: the height of the plant
         """
-        self.name = name
-        print(f"Plant created: {self.name}")
+        self.__name = name
+        print(f"Plant created: {self.__name}")
         self.__height = 0
         self.__age = 0
         self.set_height(height)
@@ -26,7 +26,7 @@ class Plant:
         rejects all invalid ages
         age: the age of the plant
         """
-        if age > 0:
+        if age >= 0:
             self.__age = age
             print(f"Age updated: {self.__age} days [OK]")
         else:
@@ -45,7 +45,7 @@ class Plant:
         rejects all invalid height
         height: the height of the plant
         """
-        if height > 0:
+        if height >= 0:
             self.__height = height
             print(f"Height updated: {self.__height}cm [OK]")
         else:
