@@ -1,19 +1,50 @@
 class GardenError(Exception):
-    def __init__(self, message):
+    """
+    garden error raised if an error occured in a garden
+    """
+    def __init__(self, message: str) -> None:
+        """
+        initalize the object garden error
+
+        :param message: the message to display if the error is printed
+        """
         super().__init__(message)
 
 
 class PlantError(GardenError):
-    def __init__(self, message):
+    """
+    plant error raise if an error occured in a plant
+    """
+    def __init__(self, message: str):
+        """
+        initalize the object plant error
+
+        :param message: the message to display if the error is printed
+        """
         super().__init__(message)
 
 
 class WaterError(GardenError):
-    def __init__(self, message):
+    """
+    water error raised if an error occured in water level
+    """
+    def __init__(self, message: str):
+        """
+        initalize the object water error
+
+        :param message: the message to display if the error is printed
+        """
         super().__init__(message)
 
 
 def main():
+    """
+    the main function that tests the errors
+
+    :raises PlantError: raise when an error occured in plant
+    :raises WaterError: raised when an error occured in water level
+    :raises GardenError: raised when an error occurse in the garden
+    """
     try:
         print("\nTesting PlantError...")
         raise PlantError("Caught PlantError: The tomato plant is wilting!")
@@ -22,17 +53,17 @@ def main():
     try:
         print("\nTesting WaterError...")
         raise WaterError("Caught WaterError: Not enough water in the tank!")
-    except WaterError as w:
-        print(w)
+    except GardenError as ge:
+        print(ge)
     print("\nTesting catching all garden errors...")
     try:
         raise PlantError("Caught a garden error: The tomato plant is wilting!")
     except PlantError as p:
         print(p)
     try:
-        raise WaterError("Caught WaterError: Not enough water in the tank!")
-    except WaterError as w:
-        print(w)
+        raise GardenError("Caught WaterError: Not enough water in the tank!")
+    except WaterError as ge:
+        print(ge)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,10 @@
 def water_plants(plant_list):
+    """
+    waters plants
+
+    :param plant_list: the list of diffrent plants to test this on
+    :raises TypeError: raised when a plant is invalid
+    """
     print("Opening watering system")
     try:
         for plant in plant_list:
@@ -14,6 +20,9 @@ def water_plants(plant_list):
 
 
 def test_watering_system():
+    """
+    test  watering system
+    """
     print("\nTesting normal watering...")
     water_plants(["tomato", "lettuce", "carrots"])
     print("\nTesting with error...")

@@ -32,7 +32,7 @@ def garden_operations(error_idx: int):
             try:
                 print(my_dic['missing_plant'])
             except KeyError:
-                print("Caught KeyError: 'missing\_plant'")
+                print("Caught KeyError: 'missing_plant'")
         case 4:
             print("\nTesting multiple errors together...")
             try:
@@ -57,6 +57,9 @@ def garden_operations(error_idx: int):
 
 
 def test_error_types():
+    """
+    test all types of errors
+    """
     garden_operations(0)
     garden_operations(1)
     garden_operations(2)
