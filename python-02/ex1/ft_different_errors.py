@@ -6,67 +6,57 @@ def garden_operations(error_idx: int) -> None:
 
     error_idx: index of each error test case and all together
     """
-    fd = None
+    if error_idx.__class__.__name__ != "int":
+        return
     match error_idx:
         case 0:
             print("\nTesting ValueError...")
-            try:
-                print(int("abc") + 35)
-            except ValueError:
-                print("Caught ValueError: invalid literal for int()")
+            print(int("abc") + 35)
         case 1:
             print("\nTesting ZeroDivisionError...")
-            try:
-                print(10/0)
-            except ZeroDivisionError:
-                print("Caught ZeroDivisionError: division by zero")
+            print(10/0)
         case 2:
             print("\nTesting FileNotFoundError...")
-            try:
-                fd = open("missing.txt", "r")
-            except FileNotFoundError:
-                print("Caught FileNotFoundError: No such file 'missing.txt'")
-            finally:
-                if fd is not None:
-                    fd.close()
+            fd = open("missing.txt", "r")
+            fd.close()
         case 3:
             print("\nTesting KeyError...")
             my_dic = {'a': 1, 'b': 2}
-            try:
-                print(my_dic['missing_plant'])
-            except KeyError:
-                print("Caught KeyError: 'missing_plant'")
+            print(my_dic['missing_plant'])
         case 4:
             print("\nTesting multiple errors together...")
-            try:
-                print(int("abc") + 35)
-            except ValueError:
-                pass
-            try:
-                print(10/0)
-            except ZeroDivisionError:
-                pass
-            try:
-                fd = open("missing.txt", "r")
-            except FileNotFoundError:
-                pass
+            print(int("abc") + 35)
+            print(10/0)
+            fd = open("missing.txt", "r")
+            fd.close()
             my_dic = {'a': 1, 'b': 2}
-            try:
-                print(my_dic['missing_plant'])
-            except KeyError:
-                pass
-            print("Caught an error, but program continues!")
+            print(my_dic['missing_plant'])
 
 
 def test_error_types() -> None:
     """
     test all types of errors
     """
-    garden_operations(0)
-    garden_operations(1)
-    garden_operations(2)
-    garden_operations(3)
-    garden_operations(4)
+    try:
+        garden_operations(0)
+    except ValueError:
+        print("Caught ValueError: invalid literal for int()")
+    try:
+        garden_operations(1)
+    except ZeroDivisionError:
+        print("Caught ZeroDivisionError: division by zero")
+    try:
+        garden_operations(2)
+    except FileNotFoundError:
+        print("Caught FileNotFoundError: No such file 'missing.txt'")
+    try:
+        garden_operations(3)
+    except KeyError:
+        print("Caught KeyError: 'missing_plant'")
+    try:
+        garden_operations(4)
+    except (ValueError, ZeroDivisionError, FileNotFoundError, KeyError):
+        print("Caught an error, but program continues!")
 
 
 if __name__ == "__main__":

@@ -1,10 +1,12 @@
-def water_plants(plant_list) -> None:
+def water_plants(plant_list: list) -> None:
     """
     waters plants
 
     :param plant_list: the list of diffrent plants to test this on
     :raises TypeError: raised when a plant is invalid
     """
+    if plant_list.__class__.__name__ != "list":
+        return
     print("Opening watering system")
     for plant in plant_list:
         if plant.__class__.__name__ != "str":

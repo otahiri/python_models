@@ -15,7 +15,7 @@ class PlantError(GardenError):
     """
     plant error raise if an error occured in a plant
     """
-    def __init__(self, message: str):
+    def __init__(self, message: str) -> None:
         """
         initalize the object plant error
 
@@ -28,7 +28,7 @@ class WaterError(GardenError):
     """
     water error raised if an error occured in water level
     """
-    def __init__(self, message: str):
+    def __init__(self, message: str) -> None:
         """
         initalize the object water error
 

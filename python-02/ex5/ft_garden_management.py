@@ -8,6 +8,8 @@ class GardenError(Exception):
 
         :param message: the message to display if the error is printed
         """
+        if message.__class__.__name__ != "str":
+            return None
         super().__init__(message)
 
 
@@ -21,6 +23,8 @@ class PlantError(Exception):
 
         :param message: the message to display if the error is printed
         """
+        if message.__class__.__name__ != "str":
+            return None
         super().__init__(message)
 
 
@@ -34,6 +38,8 @@ class WaterError(Exception):
 
         :param message: the message to display if the error is printed
         """
+        if message.__class__.__name__ != "str":
+            return None
         super().__init__(message)
 
 
@@ -49,6 +55,10 @@ class Plant:
         :param water: the starting water of the plant
         :param sun: the starting value of sun exposure
         """
+        if name.__class__.__name__ != "str"\
+            or water.__class__.__name__ != "int"\
+                or sun.__class__.__name__ != "int":
+            return None
         self.name = name
         self.water = water
         self.sun = sun
@@ -65,6 +75,9 @@ class Garden:
         :param owner: the name of the garden owner
         :param tank: the water level in the garden
         """
+        if owner.__class__.__name__ != "str"\
+                or tank.__class__.__name__ != "int":
+            return None
         self.tank = tank
         self.owner = owner
         self.crops = []
@@ -84,6 +97,9 @@ class GardenManager:
         :raises PlantError: raise this error if the plant is invalid
                             i.e a plant with an empty plant or a None
         """
+        if garden.__class__.__name__ != "Garden"\
+                or plant.__class__.__name__ != "Plant":
+            return None
         try:
             if not plant.name or plant.name.strip() == "":
                 raise PlantError("Error adding plant: Plant name cannot be \
@@ -93,7 +109,7 @@ empty!")
         except PlantError as pe:
             print(pe)
         finally:
-            return
+            return None
 
     @staticmethod
     def water_plants(garden: Garden, water: int) -> None:
@@ -107,6 +123,9 @@ empty!")
         :raises PlantError: raise this error if trying to water an invalid
                             plant
         """
+        if garden.__class__.__name__ != "Garden"\
+                or water.__class__.__name__ != "int":
+            return None
         try:
             if water < 0:
                 raise WaterError("Water error: negative water is invalid\
@@ -135,6 +154,8 @@ invalid plant")
         :raises WaterError: raise this error if the water is above or below
                             the specified levels
         """
+        if garden.__class__.__name__ != "Garden":
+            return None
         for plant in garden.crops:
             try:
                 if plant.water < 1:
@@ -157,6 +178,8 @@ invalid plant")
         param garden: the garden to check
         :raises GardenError: the error to notify if the tank is empty
         """
+        if garden.__class__.__name__ != "Garden":
+            return None
         try:
             if garden.tank <= 0:
                 garden.tank += 10
