@@ -1,4 +1,5 @@
-def check_plant_health(plant_name, water_level, sunlight_hours) -> str:
+def check_plant_health(plant_name: str, water_level: int,
+                       sunlight_hours: int) -> str:
     """
     check the health of the plant
 

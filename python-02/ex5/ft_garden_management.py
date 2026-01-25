@@ -1,3 +1,6 @@
+import re
+
+
 class GardenError(Exception):
     """
     garden error raise if there is an error in the garden
@@ -8,8 +11,6 @@ class GardenError(Exception):
 
         :param message: the message to display if the error is printed
         """
-        if message.__class__.__name__ != "str":
-            return None
         super().__init__(message)
 
 
@@ -23,8 +24,6 @@ class PlantError(Exception):
 
         :param message: the message to display if the error is printed
         """
-        if message.__class__.__name__ != "str":
-            return None
         super().__init__(message)
 
 
@@ -38,8 +37,6 @@ class WaterError(Exception):
 
         :param message: the message to display if the error is printed
         """
-        if message.__class__.__name__ != "str":
-            return None
         super().__init__(message)
 
 
@@ -75,9 +72,6 @@ class Garden:
         :param owner: the name of the garden owner
         :param tank: the water level in the garden
         """
-        if owner.__class__.__name__ != "str"\
-                or tank.__class__.__name__ != "int":
-            return None
         self.tank = tank
         self.owner = owner
         self.crops = []
@@ -108,8 +102,6 @@ empty!")
             print(f"Added {plant.name} successfully")
         except PlantError as pe:
             print(pe)
-        finally:
-            return None
 
     @staticmethod
     def water_plants(garden: Garden, water: int) -> None:
