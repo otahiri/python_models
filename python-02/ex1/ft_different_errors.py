@@ -1,4 +1,4 @@
-def garden_operations(error_idx: int):
+def garden_operations(error_idx: int) -> None:
     """
     test 4 types of errors
     ValueError, ZeroDivisionError, FileNotFoundError and KeyError
@@ -6,6 +6,7 @@ def garden_operations(error_idx: int):
 
     error_idx: index of each error test case and all together
     """
+    fd = None
     match error_idx:
         case 0:
             print("\nTesting ValueError...")
@@ -23,9 +24,11 @@ def garden_operations(error_idx: int):
             print("\nTesting FileNotFoundError...")
             try:
                 fd = open("missing.txt", "r")
-                print(fd.read())
             except FileNotFoundError:
                 print("Caught FileNotFoundError: No such file 'missing.txt'")
+            finally:
+                if fd is not None:
+                    fd.close()
         case 3:
             print("\nTesting KeyError...")
             my_dic = {'a': 1, 'b': 2}
@@ -45,7 +48,6 @@ def garden_operations(error_idx: int):
                 pass
             try:
                 fd = open("missing.txt", "r")
-                print(fd.read())
             except FileNotFoundError:
                 pass
             my_dic = {'a': 1, 'b': 2}
@@ -56,7 +58,7 @@ def garden_operations(error_idx: int):
             print("Caught an error, but program continues!")
 
 
-def test_error_types():
+def test_error_types() -> None:
     """
     test all types of errors
     """

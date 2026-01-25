@@ -1,4 +1,4 @@
-def water_plants(plant_list):
+def water_plants(plant_list) -> None:
     """
     waters plants
 
@@ -6,27 +6,32 @@ def water_plants(plant_list):
     :raises TypeError: raised when a plant is invalid
     """
     print("Opening watering system")
-    try:
-        for plant in plant_list:
-            if not isinstance(plant, str):
-                raise TypeError
-            print(f"Watering {plant}")
-    except TypeError:
-        print("Error: Cannot water None - invalid plant!")
-        return
-    finally:
-        print("Closing watering system (cleanup)")
-    print("Watering completed successfully!")
+    for plant in plant_list:
+        if plant.__class__.__name__ != "str":
+            raise TypeError("Error: Cannot water None - invalid plant!")
+        print(f"Watering {plant}")
 
 
-def test_watering_system():
+def test_watering_system() -> None:
     """
     test  watering system
     """
     print("\nTesting normal watering...")
-    water_plants(["tomato", "lettuce", "carrots"])
+    try:
+        water_plants(["tomato", "lettuce", "carrots"])
+    except TypeError as te:
+        print(te)
+    finally:
+        print("Closing watering system (cleanup)")
     print("\nTesting with error...")
-    water_plants(["tomato", [None], "lettuce", "carrots"])
+    try:
+        water_plants(["tomato", [None], "lettuce", "carrots"])
+    except TypeError as te:
+        print(te)
+    finally:
+        print("Closing watering system (cleanup)")
+    print("Watering completed successfully!")
+
     print("\nCleanup always happens, even with errors!")
 
 

@@ -75,7 +75,7 @@ class GardenManager:
     the manager of all gardens
     """
     @staticmethod
-    def add_plant(garden: Garden, plant: Plant):
+    def add_plant(garden: Garden, plant: Plant) -> None:
         """
         add a plant to a garden
 
@@ -96,7 +96,7 @@ empty!")
             return
 
     @staticmethod
-    def water_plants(garden: Garden, water: int):
+    def water_plants(garden: Garden, water: int) -> None:
         """
         water the crops in garden
 
@@ -127,7 +127,7 @@ invalid plant")
             print("Closing watering system (cleanup)")
 
     @staticmethod
-    def check_plant_health(garden: Garden):
+    def check_plant_health(garden: Garden) -> None:
         """
         check for the health of the plants in garden
 
@@ -150,7 +150,7 @@ invalid plant")
                 print(we)
 
     @staticmethod
-    def check_garden_recovery(garden: Garden):
+    def check_garden_recovery(garden: Garden) -> None:
         """
         check for water in garden tank
 

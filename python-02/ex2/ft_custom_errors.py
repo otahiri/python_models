@@ -37,7 +37,7 @@ class WaterError(GardenError):
         super().__init__(message)
 
 
-def main():
+def main() -> None:
     """
     the main function that tests the errors
 
@@ -58,11 +58,11 @@ def main():
     print("\nTesting catching all garden errors...")
     try:
         raise PlantError("Caught a garden error: The tomato plant is wilting!")
-    except PlantError as p:
-        print(p)
+    except GardenError as ge:
+        print(ge)
     try:
-        raise GardenError("Caught WaterError: Not enough water in the tank!")
-    except WaterError as ge:
+        raise WaterError("Caught WaterError: Not enough water in the tank!")
+    except GardenError as ge:
         print(ge)
 
 
