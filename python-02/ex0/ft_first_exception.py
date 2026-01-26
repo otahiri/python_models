@@ -6,7 +6,6 @@ def check_temperature(temp_str: str) -> int | None:
     """
     if temp_str.__class__.__name__ != "str":
         return None
-    print(f"\nTesting temperature: {temp_str}")
     try:
         temp = int(temp_str)
         if 40 < temp or temp < 0:

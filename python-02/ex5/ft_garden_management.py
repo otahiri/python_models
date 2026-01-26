@@ -1,6 +1,3 @@
-import re
-
-
 class GardenError(Exception):
     """
     garden error raise if there is an error in the garden
