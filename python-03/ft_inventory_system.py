@@ -35,16 +35,16 @@ def classify_inv(inventory: dict) -> None:
     scarce = dict()
     abundant = dict()
     print("\n=== Item Categories ===")
-    for key in inventory.keys():
+    for key, value in inventory.items():
         if inventory[key] > 10:
-            abundant[key] = inventory[key]
+            abundant[key] = value
         elif inventory[key] >= 5:
-            moderate[key] = inventory[key]
+            moderate[key] = value
         else:
-            scarce[key] = inventory[key]
-    print(f"Abundant: {{{abundant}}}") if abundant else None
-    print(f"Moderate: {{{moderate}}}") if moderate else None
-    print(f"Scarce: {{{scarce}}}") if scarce else None
+            scarce[key] = value
+    print(f"Abundant: {abundant}") if abundant else None
+    print(f"Moderate: {moderate}") if moderate else None
+    print(f"Scarce: {scarce}") if scarce else None
 
 
 def manage_inventory(inventory: dict) -> None:
@@ -68,9 +68,9 @@ if __name__ == "__main__":
             try:
                 if not pair[0]:
                     raise ValueError
-                inventory[pair[0]] = int(pair[1])
+                inventory.update({pair[0]: int(pair[1])})
                 if inventory[pair[0]] < 0:
-                    del inventory[pair[0]]
+                    inventory[pair[0]]
                     print("cannot have negative number of something")
             except ValueError:
                 print("invalid item detected!! could not add item \
