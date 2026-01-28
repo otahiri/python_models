@@ -102,8 +102,7 @@ def calculate_mem_usage(current: float) -> None:
 
 def main() -> None:
     current = time.time()
-    event_list = ["hell",
-                  ("Paul", 49, "item_found "),
+    event_list = [("Paul", 49, "item_found "),
                   ("Paul", 50, "level_up "),
                   ("Henry", 51, "item_found "),
                   ("Bob", 53, "death "),
