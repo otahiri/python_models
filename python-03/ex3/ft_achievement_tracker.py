@@ -1,6 +1,7 @@
-
-
-def main():
+def main() -> None:
+    """
+    main program function
+    """
     print("=== Achievement Tracker System ===\n")
     alice = set(["first_kill", "level_10", "treasure_hunter",
                 "speed_demon"])

@@ -1,7 +1,10 @@
 import sys
 
 
-def main():
+def main() -> None:
+    """
+    main function to test sys.argv
+    """
     scores = []
     print("=== Player Score Analytics ===")
     count = len(sys.argv)

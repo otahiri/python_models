@@ -2,16 +2,26 @@ import sys
 
 
 def analyze_inventory(inventory: dict) -> int:
+    """
+    analyze items in the inventory
+
+    :param inventory: the Dictionary containing the items
+    :return: return the total number of the element in the inventory
+    """
     print("=== Inventory System Analysis ===")
-    total = 0
-    for key in inventory:
-        total += inventory[key]
+    total = len(inventory.keys())
     print(f"Total items in inventory: {total}")
     print(f"Unique item types: {len(inventory)}")
     return total
 
 
 def show_inventory(inventory: dict, total: int) -> None:
+    """
+    print the total items in the inventory
+
+    :param inventory: inventory containing the items
+    :param total: count of the items in the inventory
+    """
     print("\n=== Current Inventory ===")
     for key in inventory:
         print(f"{key}: {inventory[key]} units (\
@@ -19,10 +29,21 @@ def show_inventory(inventory: dict, total: int) -> None:
 
 
 def get_item(item: str) -> int:
+    """
+    return the number of an item in the inventory
+
+    :param item: the item name
+    :return: the count of the item
+    """
     return inventory[item]
 
 
 def inventory_statistic(inventory: dict) -> None:
+    """
+    print info about the inventory
+
+    :param inventory: the inventory Dictionary
+    """
     most = max(inventory, key=get_item)
     least = min(inventory, key=get_item)
     print("\n=== Inventory Statistics ===")
@@ -31,6 +52,11 @@ def inventory_statistic(inventory: dict) -> None:
 
 
 def classify_inv(inventory: dict) -> None:
+    """
+    classify items in inventory according to their count
+
+    :param inventory: the inventory Dictionary
+    """
     moderate = dict()
     scarce = dict()
     abundant = dict()
@@ -48,12 +74,23 @@ def classify_inv(inventory: dict) -> None:
 
 
 def manage_inventory(inventory: dict) -> None:
+    """
+    show the items that need management
+
+    :param inventory: inventory Dictionary
+    """
     restock = [key for key in inventory.keys() if inventory[key] < 2]
     print("\n=== Management Suggestions ===")
     print(f"Restock needed: {restock}") if restock else print("")
 
 
-def inventory_properties(inventory: dict, item: str):
+def inventory_properties(inventory: dict, item: str) -> None:
+    """
+    print the items in  the inventory and their count
+
+    :param inventory: inventory Dictionary
+    :param item: sample item to check if it is in inventory
+    """
     print("\n=== Dictionary Properties Demo ===")
     print(f"Dictionary keys: {str(inventory.keys())[10:-1]}")
     print(f"Dictionary values: {str(inventory.values())[12:-1]}")

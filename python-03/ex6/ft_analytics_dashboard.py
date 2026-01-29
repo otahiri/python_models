@@ -1,7 +1,10 @@
-from typing_extensions import TypeForm
-
-
 def comprehence_list(player_names: list, player_scores: list) -> None:
+    """
+    comprehence lists
+
+    :param player_names: player names
+    :param player_scores: player scores
+    """
     print("=== List Comprehension Examples ===")
     print(f"High scorers (>2000): \
 {[score for  score in player_scores if score > 2000]}")
@@ -9,7 +12,12 @@ def comprehence_list(player_names: list, player_scores: list) -> None:
     print(f"Active players: {player_names}")
 
 
-def dic_comprehention(player_scores: dict, player_achieve: dict):
+def dic_comprehention(player_scores: dict, player_achieve: dict) -> None:
+    """
+    dictionary  comprehention
+    :param player_scores: the scores of the players
+    :param player_achieve: the achievements of the players
+    """
     all_scores = dict()
     score_rank = {"high": 0, "medium": 0, "low": 0}
     achieve_count = dict()
@@ -30,7 +38,13 @@ def dic_comprehention(player_scores: dict, player_achieve: dict):
     print(f"Achievement counts: {achieve_count}")
 
 
-def set_comprehention(player_list: set, achievements: list):
+def set_comprehention(player_list: set, achievements: list) -> None:
+    """
+    comprehention of sets
+
+    :param player_list: list of the players
+    :param achievements: list of all achievements
+    """
     total = []
     for s in achievements:
         total.extend(s)
@@ -48,7 +62,13 @@ def set_comprehention(player_list: set, achievements: list):
     print(f"Active regions: {'north', 'east', 'central'}")
 
 
-def combined_analysis(player_achieve: dict, player_scores: dict):
+def combined_analysis(player_achieve: dict, player_scores: dict) -> None:
+    """
+    mix the comprehention of all the types
+
+    :param player_achieve: players achievements
+    :param player_scores: scores of all players
+    """
     print("\n=== Combined Analysis ===")
     total_unique = set()
     total_score = 0
@@ -66,6 +86,9 @@ def combined_analysis(player_achieve: dict, player_scores: dict):
 
 
 def main() -> None:
+    """
+    main function
+    """
     player_scores = {"charlie": 2150, "bob": 1800, "alice": 2300,
                      "diana": 2050}
     player_achieve = {"charlie": {"level_10", "treasure_hunter",
