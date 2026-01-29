@@ -1,4 +1,7 @@
 def main() -> None:
+    """
+    main function of the program
+    """
     print("=== CYBER ARCHIVES - VAULT SECURITY SYSTEM ===")
     print("\nInitiating secure vault access...")
     print("Vault connection established with failsafe protocols")
