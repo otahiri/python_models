@@ -19,5 +19,41 @@ class DataStream(ABC):
         ...
 
 
+class SensorStream(DataStream):
+    def __init__(self, stream_id: int) -> None:
+        self.stream_id = stream_id
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        return ""
+
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        return super().filter_data(data_batch, criteria)
+
+
+class TransactionStream(DataStream):
+    def __init__(self, stream_id: int) -> None:
+        self.stream_id = stream_id
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        return ""
+
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        return super().filter_data(data_batch, criteria)
+
+
+class EventStream(DataStream):
+    def __init__(self, stream_id: int) -> None:
+        self.stream_id = stream_id
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        return ""
+
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        return super().filter_data(data_batch, criteria)
+
+
 class StreamProcessor:
     pass
