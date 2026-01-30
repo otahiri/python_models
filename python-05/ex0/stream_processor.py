@@ -12,7 +12,7 @@ class DataProcessor(ABC):
         ...
 
     def format_output(self, result: str) -> str:
-        return f"Output: Processed{result}"
+        return f"Output: {result}"
 
 
 class NumericProcessor(DataProcessor):
@@ -84,7 +84,7 @@ characters, {word_count} words"
 
 class LogProcessor(DataProcessor):
     def process(self, data: Any) -> str:
-        res = "Output:"
+        res = ""
         if self.validate(data):
             print(f"Processing data: \"{data}\"")
             print("Validation: Log entry verified")
@@ -105,7 +105,7 @@ class LogProcessor(DataProcessor):
         return valid
 
     def format_output(self, result: str) -> str:
-        return result
+        return super().format_output(result)
 
 
 def main() -> None:
