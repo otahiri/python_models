@@ -13,8 +13,9 @@ def main() -> None:
         print("Warning: invalid file or file not found")
     try:
         print(("\nSECURE PRESERVATION:"))
-        with open("security_protocols.txt", "r") as protocol:
-            print(protocol.read())
+        with open("security_protocols.txt", "w") as vault:
+            vault.write("[CLASSIFIED] New security protocols archived\n")
+            print("[CLASSIFIED] New security protocols archived")
     except (IsADirectoryError, PermissionError, FileNotFoundError):
         print("Warning: invalid file or file not found")
     print("Vault automatically sealed upon completion")

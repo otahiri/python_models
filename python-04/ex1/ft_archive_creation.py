@@ -10,7 +10,7 @@ def main() -> None:
     print("=== CYBER ARCHIVES - PRESERVATION SYSTEM ===")
     print("\nInitializing new storage unit: new_discovery.txt")
     print("Storage unit created successfully...")
-    print("\nInscribing preservation data.")
+    print("\nInscribing preservation data...")
     try:
         catalog = open(name, "w")
         catalog.write(entries)

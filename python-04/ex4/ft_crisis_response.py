@@ -33,6 +33,7 @@ def main() -> None:
     try:
         with open("standard_archive.txt", "r") as fd:
             archive = fd.read()
+        print(f"SUCCESS: Archive recovered - ``{archive}''")
     except IsADirectoryError:
         print("RESPONSE: invalid type")
     except PermissionError:
@@ -41,7 +42,6 @@ def main() -> None:
     except FileNotFoundError:
         print("RESPONSE: Archive not found in storage matrix")
         print("STATUS: Crisis handled, system stable")
-    print(f"SUCCESS: Archive recovered - ``{archive}''")
     print("STATUS: Normal operations resumed")
     print("\nAll crisis scenarios handled successfully. Archives secure")
 

@@ -11,7 +11,7 @@ def main() -> None:
         print(fd.read())
         fd.close()
     except (PermissionError, IsADirectoryError, FileNotFoundError):
-        print("Warning: file invalid or not found")
+        print("ERROR: Storage vault not found. Run data generator first.")
     print("\nData recovery complete. Storage unit disconnected.")
 
 
