@@ -40,49 +40,65 @@ class SensorStream(DataStream):
 
 
 class TransactionStream(DataStream):
-    def __init__(self, stream_id: int) -> None:
+    def __init__(self, stream_id: str, budget: int) -> None:
         self.stream_id = stream_id
+        self.budget = budget
+        self.transactions = dict()
+        print("Initializing Transaction Stream...")
+        print(f"Stream ID: {stream_id}, Type: Financial Data")
 
     def process_batch(self, data_batch: List[Any]) -> str:
-        return ""
+        for action, _, cost in data_batch:
+            if action == "buy":
+                self.budget += cost
+            elif action == "sell":
+                self.budget -= cost
+        return "critical_error: insufficent funds for all transactions" \
+            if self.budget < 0 else "sufficent funds for all transactions"
 
-    def filter_data(self, data_batch: List[Any],
-                    criteria: Optional[str] = None) -> List[Any]:
-        return super().filter_data(data_batch, criteria)
-
-
-class EventStream(DataStream):
-    def __init__(self, stream_id: int) -> None:
-        print("Initializing Event Stream...")
-        self.stream_id = stream_id
-        self.error = 0
-        self.events = 0
-
-    def process_batch(self, data_batch: List[Any]) -> str:
-        print(f"Stream ID: {self.stream_id}, Type: System Events")
-        print(f"Processing event batch: {data_batch}")
-        valid_data = self.filter_data(data_batch, "status")
-        print(f"Event analysis: {self.events} events, {self.error} \
-errors detected")
-        return "\n".join([f"{data[0]}: {data[1]}" for data in valid_data])
+    def get_stats(self) -> Dict[str, Union[str, int, float]]:
+        return f"critical: surpassed the budget by {self.budget}"
 
     def filter_data(self, data_batch: List[Any],
                     criteria: Optional[str] = None) -> List[Any]:
         valid_data = list()
         for data in data_batch:
-            if isinstance(data, tuple) and len(data) == 2\
-                    and all(isinstance(x, str) for x in data):
-                if not criteria or criteria in data[1]:
-                    self.error += 1 if "error" in data[0] else 0
-                    self.events += 1
+            if isinstance(data, tuple) and len(data) == 3:
+                action, item, _ = data
+                if not criteria or item == criteria and \
+                        action in ["buy", "sell"]:
+                    valid_data.append(data)
+        return valid_data
+
+
+class EventStream(DataStream):
+    def __init__(self, stream_id: str) -> None:
+        print("Initializing Event Stream...")
+        self.stream_id = stream_id
+        self.error = 0
+        self.events = 0
+        print(f"Stream ID: {stream_id}, Type: System Events")
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        for data in data_batch:
+            if "error" in data:
+                self.error += 1
+            self.events += 1
+        return f"Event analysis: {self.error} \
+error detected"
+
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        valid_data = list()
+        for data in data_batch:
+            if isinstance(data, str):
+                if not criteria or criteria in data:
                     valid_data.append(data)
         return valid_data
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        stats = dict()
-        stats["events"] = self.events
-        stats["error"] = self.error
-        return stats
+        return {"total events": self.events,
+                "total errors": self.error}
 
 
 class StreamProcessor:
@@ -92,27 +108,40 @@ class StreamProcessor:
     def add_stream(self, stream: DataStream) -> None:
         self.streams.append(stream)
 
-    def get_stream(self, stream_id: int) -> Optional[DataStream]:
+    def get_stream(self, stream_id: str) -> Optional[DataStream]:
         for stream in self.streams:
             if stream.stream_id == stream_id:
                 return stream
 
-    def process_data(self, stream_id: int, data_batch: List[Any]) -> None:
-        stream: Any = None
-        for x in self.streams:
-            if x.stream_id == stream_id:
-                stream = x
-        if stream:
-            result = stream.process_batch(data_batch)
-            print("")
-        else:
-            raise StreamError("invalid stream id")
+    def proccess_data(self, stream_id: str,  data_batch: List[Any],
+                      criteria: Optional[str]) -> None:
+        stream = self.get_stream(stream_id)
+        if not stream:
+            print("Warning: invalid stream id")
+            return
+        valid_data = stream.filter_data(data_batch, criteria)
+        print(f"proccessing data: {valid_data}")
+        process_output = stream.process_batch(valid_data)
+        stats = stream.get_stats()
+        print(process_output)
+        print(", ".join([f"{key}: {value}" for key, value in stats.items()]))
 
 
 def main() -> None:
-    event_steam = EventStream(0)
+    event_input: List[Any] = [
+                                "event: user_login",
+                                "critical_error: database connection lost",
+                                "alert: user_logout",
+                                "error: high memory usage",
+                                404,
+                                None
+                            ]
+    event_stream = EventStream("EVENT001")
+    transaction_stream = TransactionStream
     steam_processor = StreamProcessor()
-    steam_processor.add_stream(event_steam)
+    steam_processor.add_stream(event_stream)
+    steam_processor.proccess_data("EVENT001", event_input, "error")
+
 
 
 if __name__ == "__main__":
