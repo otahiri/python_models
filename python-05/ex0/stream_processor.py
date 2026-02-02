@@ -22,25 +22,28 @@ class NumericProcessor(DataProcessor):
         temp_lst = list()
         result = ""
         try:
-            numbers: List = []
             if self.validate(data):
                 print("Validation: Numeric data verified")
-                for x in data.split(','):
-                    if x:
-                        try:
-                            temp_lst.append(int(float(x)))
-                        except ValueError:
-                            pass
+                if isinstance(data, list):
+                    for x in data:
+                        if x and isinstance(x, int | float):
+                            try:
+                                temp_lst.append(int(x))
+                            except ValueError:
+                                pass
+                elif isinstance(data, int | float):
+                    temp_lst.append(int(data))
             else:
-                print("Warning: date is invalid")
-            numbers = [str(x) for x in temp_lst]
-            result = ", ".join(numbers)
+                print("Warning: data is invalid")
+            result = ", ".join([str(x) for x in temp_lst])
             return result
         except (ValueError, TypeError):
             return ""
 
     def validate(self, data: Any) -> bool:
-        return data.__class__.__name__ == "str"
+        return (isinstance(data, list) and
+                all(isinstance(x, Union[int, float]) for x in data)) or\
+            isinstance(data, Union[float, int])
 
     def format_output(self, result: str) -> str:
         try:
@@ -58,18 +61,13 @@ class TextProcessor(DataProcessor):
         total = ""
         if self.validate(data):
             print("Validation: Text data verified")
-            try:
-                total += " ".join([line for line in data.values()])
-            except (ValueError, TypeError):
-                return "invalid"
+            total = " ".join([w for w in data.split() if not w.isdigit()])
             return total
 
         return "invalid"
 
     def validate(self, data: Any) -> bool:
-        valid = data.__class__.__name__ == "Dict" and \
-            all(x.__class__.__name__ == "str" for x in data.values())
-        return valid
+        return isinstance(data, str)
 
     def format_output(self, result: str) -> str:
         if result == "invalid":
@@ -84,20 +82,21 @@ characters, {word_count} words"
 
 class LogProcessor(DataProcessor):
     def process(self, data: Any) -> str:
-        res = ""
+        res: Dict = {"Warning": [], "Error": [], "Log": []}
         if self.validate(data):
             print(f"Processing data: \"{data}\"")
             print("Validation: Log entry verified")
             try:
                 for log in data:
                     if "Warning" in log:
-                        res += log
-                if not res:
-                    res = "no critical state detected"
-                return res
-            except (ValueError, TypeError):
-                return res + "invalid data"
-        return res + "invalid data"
+                        res["Warning"].append(log)
+                if res["Warning"]:
+                    return "Alert: critical state detected"
+                else:
+                    return "everything is working perfectly"
+            except (KeyError, ValueError):
+                return "invalid data"
+        return "invalid data"
 
     def validate(self, data: Any) -> bool:
         valid = data.__class__.__name__ == "list" and \
@@ -112,19 +111,19 @@ def main() -> None:
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
     print("\nInitializing Numeric Processor...")
     numeric_processor = NumericProcessor()
-    number = "9834.342, 12312, 123.1231,fdskj"
+    number = [9834.342, 12312, 123.1231]
     numeric_res = numeric_processor.process(number)
     print(numeric_processor.format_output(numeric_res))
     print("\nInitializing Text Processor...")
     text_processor = TextProcessor()
-    text: Dict = {0: "hello world", 1: "my name is oussama"}
+    text = "hello world 832 my name is me"
     text_res = text_processor.process(text)
     print(text_processor.format_output(text_res))
     print("\nInitializing Log Processor...")
     log_processor = LogProcessor()
-    logs = ["Alert server is under load",
-            "Alert: server is down",
-            "Warning: connection time out"]
+    logs: List = ["Alert server is under load",
+                  "Alert: server is down",
+                  "Warning: connection time out"]
     log_res = log_processor.process(logs)
     print(log_processor.format_output(log_res))
     processors = [numeric_processor, text_processor, log_processor]
@@ -137,7 +136,7 @@ def main() -> None:
     print("Result 1: ", processors[1].format_output(result))
     print()
     result = processors[2].process(logs)
-    print("Result 1: ", processors[2].format_output(result))
+    print("Result 2: ", processors[2].format_output(result))
 
 
 if __name__ == "__main__":

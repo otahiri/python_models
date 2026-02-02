@@ -57,7 +57,7 @@ class TransactionStream(DataStream):
             if self.budget < 0 else "sufficent funds for all transactions"
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        return f"critical: surpassed the budget by {self.budget}"
+        return dict()
 
     def filter_data(self, data_batch: List[Any],
                     criteria: Optional[str] = None) -> List[Any]:
