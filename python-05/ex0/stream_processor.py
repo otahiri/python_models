@@ -19,19 +19,19 @@ class NumericProcessor(DataProcessor):
 
     def process(self, data: Any) -> str:
         print(f"Processing data: {data}")
-        temp_lst = list()
+        temp_lst: List = list()
         result = ""
         try:
             if self.validate(data):
                 print("Validation: Numeric data verified")
-                if isinstance(data, list):
+                if data.__class__.__name__ == "list":
                     for x in data:
-                        if x and isinstance(x, int | float):
+                        if x and x.__class__.__name__ in ["int", "float"]:
                             try:
                                 temp_lst.append(int(x))
                             except ValueError:
                                 pass
-                elif isinstance(data, int | float):
+                elif data.__class__.__name__ in ["int", "float"]:
                     temp_lst.append(int(data))
             else:
                 print("Warning: data is invalid")
@@ -41,9 +41,9 @@ class NumericProcessor(DataProcessor):
             return ""
 
     def validate(self, data: Any) -> bool:
-        return (isinstance(data, list) and
-                all(isinstance(x, Union[int, float]) for x in data)) or\
-            isinstance(data, Union[float, int])
+        return data.__class__.__name__ == "list" and\
+                (all(x.__class__.__name__ in ["int", "float"] for x in data)
+                    or data.__class__.__name__ in ["float", "int"])
 
     def format_output(self, result: str) -> str:
         try:
@@ -67,7 +67,7 @@ class TextProcessor(DataProcessor):
         return "invalid"
 
     def validate(self, data: Any) -> bool:
-        return isinstance(data, str)
+        return data.__class__.__name__ == "str"
 
     def format_output(self, result: str) -> str:
         if result == "invalid":

@@ -27,6 +27,7 @@ class DataStream(ABC):
 
 class SensorStream(DataStream):
     def __init__(self, stream_id: str) -> None:
+        print("\nInitializing Sensor Stream...")
         self.stream_id = stream_id
         self.type = "humidity"
         self.average = {"temp": [0, 0], "humidity": [0, 0], "pressure": [0, 0]}
@@ -38,8 +39,11 @@ class SensorStream(DataStream):
                 self.average[sensor][0] += 1
                 self.average[sensor][1] += value
         try:
-            res = f"avg {self.type}: \
-{self.average[self.type][1] / self.average[self.type][0]}"
+            res = "\n".join([f"avg {key}:\
+{self.average[key][1] / self.average[key][0]}"
+                            for key in self.average.keys()
+                            if self.average[key][0]])
+
         except ZeroDivisionError:
             res = f"avg {self.type}: 0"
         return res
@@ -65,9 +69,9 @@ class SensorStream(DataStream):
 
 
 class TransactionStream(DataStream):
-    def __init__(self, stream_id: str, budget: int) -> None:
+    def __init__(self, stream_id: str) -> None:
         self.stream_id = stream_id
-        self.budget = budget
+        self.budget = 9000
         self.transactions: Dict[str, Union[str, int, float]] =\
             {"buy": 0, "sell": 0}
         print("\nInitializing Transaction Stream...")
@@ -147,8 +151,8 @@ class StreamProcessor:
             if stream.stream_id == stream_id:
                 return stream
 
-    def proccess_data(self, stream_id: str,  data_batch: List[Any],
-                      criteria: Optional[str]) -> None:
+    def process_data(self, stream_id: str,  data_batch: List[Any],
+                     criteria: Optional[str]) -> None:
         stream = self.get_stream(stream_id)
         valid_data = list()
         if not stream:
@@ -158,20 +162,39 @@ class StreamProcessor:
             valid_data = stream.filter_data(data_batch, criteria)
         except (KeyError, ValueError, TypeError):
             print("Error: invalid data", file=sys.stderr)
-        print(f"proccessing data: {valid_data}")
+        print(f"Processing data: {valid_data}")
         process_output = stream.process_batch(valid_data)
         stats = stream.get_stats()
         print(process_output)
         print(", ".join([f"{key}: {value}" for key, value in stats.items()]))
 
+    def process_mixed_data(self, data_batch: List[Any]):
+        event = []
+        sensor = []
+        trans = []
+        print("\nProcessing mixed stream types through unified interface..")
+        for data in data_batch:
+            if isinstance(data, str):
+                event.append(data)
+            if isinstance(data, tuple):
+                if len(data) == 2:
+                    sensor.append(data)
+                elif len(data) == 3:
+                    trans.append(data)
+        self.process_data("EVENT001", event, None)
+        print()
+        self.process_data("SENSOR_001", sensor, None)
+        print()
+        self.process_data("TRANS_001", trans, None)
+
 
 def main() -> None:
-    event_input: List[Any] = [ "event: user_login",
-                               "critical_error: database connection lost",
-                                "alert: user_logout",
-                                "error: high memory usage",
-                                404,
-                                None]
+    event_input: List[Any] = ["event: user_login",
+                              "critical_error: database connection lost",
+                              "alert: user_logout",
+                              "error: high memory usage",
+                              404,
+                              None]
     transaction_input = [("buy", 800, "seed"),
                          ("sell", 322, "chickens"),
                          ("buy", 281, "fertilizer"),
@@ -181,17 +204,26 @@ def main() -> None:
                     ("humidity", 65), ("humidity", 75), ("humidity", 55),
                     ("humidity", 70), ("pressure", 1013), ("pressure", 1200),
                     ("pressure", 1010), ("pressure", 950)]
+    mixed_input = [("temp", 28.7), ("temp", 12), ("temp", 9), ("temp", 19),
+                   ("buy", 800, "seed"),
+                   ("sell", 322, "chickens"),
+                   ("buy", 281, "fertilizer"), "event: user_login",
+                   "critical_error: database connection lost",
+                   "alert: user_logout"
+                   ]
 
     event_stream = EventStream("EVENT001")
     stream_processor = StreamProcessor()
     stream_processor.add_stream(event_stream)
-    stream_processor.proccess_data("EVENT001", event_input, "error")
-    transaction_stream = TransactionStream("TRANS_001", 9600)
+    stream_processor.process_data("EVENT001", event_input, "error")
+    transaction_stream = TransactionStream("TRANS_001")
     stream_processor.add_stream(transaction_stream)
-    stream_processor.proccess_data("TRANS_001", transaction_input, "100")
+    stream_processor.process_data("TRANS_001", transaction_input, "100")
     sensor_processor = SensorStream("SENSOR_001")
     stream_processor.add_stream(sensor_processor)
-    stream_processor.proccess_data("SENSOR_001", sensor_input, "temp")
+    stream_processor.process_data("SENSOR_001", sensor_input, None)
+    print("\n=== Polymorphic Stream Processing ===")
+    stream_processor.process_mixed_data(mixed_input)
 
 
 if __name__ == "__main__":
