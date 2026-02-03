@@ -22,36 +22,46 @@ class DataStream(ABC):
         return valid_data
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        ...
+        return {"process": 0}
 
 
 class SensorStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         self.stream_id = stream_id
-        self.type = "temp"
-        self.average = dict()
+        self.type = "humidity"
+        self.average = {"temp": [0, 0], "humidity": [0, 0], "pressure": [0, 0]}
         print(f"Stream ID: {stream_id}, Type: Financial Data")
 
     def process_batch(self, data_batch: List[Any]) -> str:
-        res = {"temp": [0, 0], "humidity": [0, 0], "pressure": [0, 0]}
         for sensor, value in data_batch:
-            if sensor in res.keys():
-                res[sensor][0] += 1
-                res[sensor][1] += value
-        return f"avg {self.type}: {res[self.type][1] / res[self.type][0]}"
+            if sensor in self.average.keys():
+                self.average[sensor][0] += 1
+                self.average[sensor][1] += value
+        try:
+            res = f"avg {self.type}: \
+{self.average[self.type][1] / self.average[self.type][0]}"
+        except ZeroDivisionError:
+            res = f"avg {self.type}: 0"
+        return res
 
     def filter_data(self, data_batch: List[Any],
                     criteria: Optional[str] = None) -> List[Any]:
         valid_data = []
+        self.type = criteria
         for sense, value in data_batch:
             if sense in ["temp", "humidity", "pressure"] and value >= 0:
-                self.average[sense] = 
                 if not criteria or criteria == sense:
                     valid_data.append([sense, value])
         return valid_data
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        return super().get_stats()
+        res = dict()
+        for key in self.average.keys():
+            try:
+                res[key] = self.average[key][1] / self.average[key][0]
+            except ZeroDivisionError:
+                pass
+        return res
 
 
 class TransactionStream(DataStream):
@@ -156,14 +166,12 @@ class StreamProcessor:
 
 
 def main() -> None:
-    event_input: List[Any] = [
-                                "event: user_login",
-                                "critical_error: database connection lost",
+    event_input: List[Any] = [ "event: user_login",
+                               "critical_error: database connection lost",
                                 "alert: user_logout",
                                 "error: high memory usage",
                                 404,
-                                None
-                            ]
+                                None]
     transaction_input = [("buy", 800, "seed"),
                          ("sell", 322, "chickens"),
                          ("buy", 281, "fertilizer"),
