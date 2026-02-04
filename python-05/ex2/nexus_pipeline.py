@@ -58,12 +58,12 @@ class OutputStage:
         print("Stage 3: Output formatting and delivery")
 
     def process(self, data: Any) -> Any:
-        keys = list(data.keys())
-        if len(keys) > 2:
-            keys = keys[:-1]
-        temp_output = " (critical range)" if "critical" in keys\
+        values = data.values()
+        if len(values) > 3:
+            values = list(values)[:-1]
+        temp_output = " (critical range)" if "critical" in data.keys()\
             else " (normal range)"
-        res = "Output: " + "".join([str(v) for v in list(data.values())])
+        res = "Output: " + "".join([str(v) for v in values])
         return res + temp_output
 
 
@@ -143,8 +143,10 @@ class CSVAdapter(ProcessingPipeline):
         print(f"\nProcessing {self.pipeline_id}, data through  pipeline...")
         try:
             elements = data.split(',')
+            if len(elements) != 3:
+                raise ValueError
             res["sensor"] = elements[0]
-            res["value"] = elements[1]
+            res["val"] = elements[1]
             res["unit"] = elements[2]
         except (ValueError, KeyError, IndexError):
             print("Error: failure during the parsing stage")
