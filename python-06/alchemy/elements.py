@@ -1,26 +1,26 @@
 def create_fire() -> str:
     """
-    return a string
+    create fire
     """
     return "Fire element created"
 
 
 def create_water() -> str:
     """
-    return a string
+    create water
     """
     return "Water element created"
 
 
 def create_earth() -> str:
     """
-    return  a string
+    create earth
     """
     return "Earth element created"
 
 
 def create_air() -> str:
     """
-    return a string
+    create air
     """
     return "Air element created"

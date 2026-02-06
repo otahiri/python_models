@@ -32,4 +32,5 @@ if __name__ == "__main__":
     with open("alchemy/__init__.py") as fd:
         string = fd.read()
         lines = string.splitlines()
-        print("\n" + lines[3], "\n" + lines[4])
+        print("\nPackage metadata:")
+        print(lines[3].replace("\"", ""), "\n" + lines[4].replace("\"", ""))
