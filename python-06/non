@@ -1,0 +1,16 @@
+touch ft_sacred_scroll.py
+touch ft_import_transmutation.py
+touch ft_pathway_debate.py
+touch ft_circular_curse.py
+touch alchemy/
+touch alchemy/__init__.py
+touch alchemy/elements.py
+touch alchemy/potions.py
+touch alchemy/transmutation/
+touch alchemy/transmutation/__init__.py
+touch alchemy/transmutation/basic.py
+touch alchemy/transmutation/advanced.py
+touch alchemy/grimoire/
+touch alchemy/grimoire/__init__.py
+touch alchemy/grimoire/spellbook.py
+touch alchemy/grimoire/validator.py
