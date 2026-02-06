@@ -34,11 +34,11 @@ class TransformStage:
         for value in data.values():
             if isnumber(value):
                 num = float(value)
-                if num > 30:
+                if num < -20 or num > 30:
                     data["critical"] = True
-                    break
-        print("Transform: Enriched with metadata and validation")
-        return data
+                print("Transform: Enriched with metadata and validation")
+                return data
+        return None
 
 
 class OutputStage:
@@ -51,7 +51,8 @@ class OutputStage:
             values = list(values)[:-1]
         temp_output = " (critical range)" if "critical" in data.keys()\
             else " (normal range)"
-        res = "Output: " + "".join([str(v) for v in values])
+        res = f"Output: {data.get('sensor', 'unknown')} {data.get('val', '0')}\
+{data.get('unit', '')}"
         return res + temp_output
 
 
@@ -74,6 +75,8 @@ class ProcessingPipeline (ABC):
             idx += 1
             try:
                 current_data = stage.process(current_data)
+                if not current_data:
+                    raise ValueError
             except (ValueError, KeyError):
                 print(f"Error detected in Stage {idx}: Invalid data format")
                 print("Recovery initiated: Switching to backup processor")
@@ -92,7 +95,9 @@ class NexusManager:
     def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
         self.pipelines.append(pipeline)
 
-    def add_stages(self, stages: List[ProcessingStage]):
+    def add_stages(self) -> None:
+        stages: List[ProcessingStage] = [InputStage(), TransformStage(),
+                                         OutputStage()]
         for pipeline in self.pipelines:
             for stage in stages:
                 pipeline.add_stage(stage)
@@ -103,13 +108,23 @@ class NexusManager:
                 return pipeline
         return None
 
-    def process_data(self, data: Any, id: str) -> None:
+    def process_data(self, data: Any, id: str) -> str:
         pipeline = self.get_pipeline(id)
         if not pipeline:
             print("Warning: invalid pipeline_id")
-            return
+            return ""
         output = pipeline.process(data)
-        print(output) if output else print("")
+        return output if output else ""
+
+    def chain_data(self, data: Any, pipeline_id: str) -> None:
+        processed = self.process_data(data, pipeline_id)
+        if not processed:
+            return
+        analyzed = processed.replace("Output: ", "").split("(",)[0]
+        product = self.process_data(", ".join(analyzed.split()), "CSV")
+        if not product:
+            return
+        print(product)
 
 
 class JSONAdapter(ProcessingPipeline):
@@ -118,10 +133,12 @@ class JSONAdapter(ProcessingPipeline):
         print(f"\nProcessing {self.pipeline_id} data through pipeline...")
         try:
             elements = data[1:-1].split(',')
-            for element in elements:
-                key, value = element.split(":")
-                res[key] = value
-        except (ValueError, TypeError):
+            if not all([len(element) != 2 for element in elements]):
+                raise ValueError
+            res["sensor"] = elements[0].split(":")[1]
+            res["val"] = elements[1].split(":")[1]
+            res["unit"] = elements[2].split(":")[1]
+        except (ValueError, TypeError, IndexError):
             print("Error: failure during the parsing stage")
             print("initializing safety protocol")
             print("closing all channels")
@@ -170,23 +187,26 @@ class CSVAdapter(ProcessingPipeline):
 def main() -> None:
     print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
     nexus = NexusManager()
-    json = JSONAdapter("JSON")
-    csv = CSVAdapter("CSV")
-    stream = StreamAdapter("Stream")
-    nexus.add_pipeline(json)
-    nexus.add_pipeline(csv)
-    nexus.add_pipeline(stream)
+    nexus.add_pipeline(JSONAdapter("JSON"))
+    nexus.add_pipeline(CSVAdapter("CSV"))
+    nexus.add_pipeline(StreamAdapter("Stream"))
     print("\nCreating Data Processing Pipeline..")
-    input_stage = InputStage()
-    tran_stage = TransformStage()
-    output_stage = OutputStage()
-    nexus.add_stages([input_stage, tran_stage, output_stage])
+    nexus.add_stages()
     print("\n=== Multi-Format Data Processing ===")
-    nexus.process_data("{sensor: temp, val: 22.5, °C}", "JSON")
-    nexus.process_data("temp, 35, °C", "CSV")
-    nexus.process_data(["Initializing sensor: temp", "Received input: 111.9",
-                        "Extracting reading unit: °C"], "Stream")
+    print(nexus.process_data("{sensor: temp, val: 22.5, unit: °C}", "JSON"))
+    print(nexus.process_data("temp, -35, °C", "CSV"))
+    print(nexus.process_data(["Initializing sensor: temp",
+          "Received input: 111.9", "Extracting reading unit: °C"], "Stream"))
+    print("\n=== Pipeline Chaining Demo ===")
+    nexus.chain_data("{sensor: temp, val: 22.5, unit: °C}", "JSON")
+
+    print("\n=== Error Recovery Test ===\n\
+Simulating pipeline failure...")
+    nexus.process_data("{sensor: temp, val: invalid, unit: °C}", "JSON")
     print("Nexus Integration complete. All systems operational.")
 
 
-main()
+try:
+    main()
+except Exception as error:
+    print("[Error]:", error)
