@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    nexus_pipeline.py                                  :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: otahiri- <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/02/04 13:50:25 by otahiri-          #+#    #+#              #
-#    Updated: 2026/02/04 13:50:27 by otahiri-         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 from typing import Any, List, Dict, Union, Optional, Protocol
 from abc import ABC, abstractmethod
 
@@ -99,9 +87,15 @@ restored, processing resumed")
 class NexusManager:
     def __init__(self) -> None:
         self.pipelines: List[ProcessingPipeline] = []
+        print("Initializing Nexus Manager...")
 
     def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
         self.pipelines.append(pipeline)
+
+    def add_stages(self, stages: List[ProcessingStage]):
+        for pipeline in self.pipelines:
+            for stage in stages:
+                pipeline.add_stage(stage)
 
     def get_pipeline(self, id: str) -> Union[ProcessingPipeline, None]:
         for pipeline in self.pipelines:
@@ -109,18 +103,19 @@ class NexusManager:
                 return pipeline
         return None
 
-    def process_all(self, data: Any, id: str) -> None:
+    def process_data(self, data: Any, id: str) -> None:
         pipeline = self.get_pipeline(id)
         if not pipeline:
             print("Warning: invalid pipeline_id")
             return
-        pipeline.process(data)
+        output = pipeline.process(data)
+        print(output) if output else print("")
 
 
 class JSONAdapter(ProcessingPipeline):
     def process(self, data: str) -> Any:
         res: Dict = dict()
-        print(f"\nProcessing {self.pipeline_id}, data through pipeline...")
+        print(f"\nProcessing {self.pipeline_id} data through pipeline...")
         try:
             elements = data[1:-1].split(',')
             for element in elements:
@@ -132,15 +127,30 @@ class JSONAdapter(ProcessingPipeline):
             print("closing all channels")
             return None
         output = super().run_stages(res)
-        if not output:
+        return output
+
+
+class StreamAdapter(ProcessingPipeline):
+    def process(self, data: Any) -> Any:
+        res: Dict = dict()
+        print(f"\nProcessing {self.pipeline_id} data through same pipeline...")
+        try:
+            res["sensor"] = data[0].split(":")[1]
+            res["val"] = data[1].split(":")[1]
+            res["unit"] = data[2].split(":")[1]
+        except (ValueError, TypeError):
+            print("Error: failure during the parsing stage")
+            print("initializing safety protocol")
+            print("closing all channels")
             return None
+        output = super().run_stages(res)
         return output
 
 
 class CSVAdapter(ProcessingPipeline):
     def process(self, data: Any) -> Any:
         res: Dict = dict()
-        print(f"\nProcessing {self.pipeline_id}, data through  pipeline...")
+        print(f"\nProcessing {self.pipeline_id} data through  pipeline...")
         try:
             elements = data.split(',')
             if len(elements) != 3:
@@ -158,22 +168,25 @@ class CSVAdapter(ProcessingPipeline):
 
 
 def main() -> None:
-    json = JSONAdapter("JSON001")
+    print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
+    nexus = NexusManager()
+    json = JSONAdapter("JSON")
+    csv = CSVAdapter("CSV")
+    stream = StreamAdapter("Stream")
+    nexus.add_pipeline(json)
+    nexus.add_pipeline(csv)
+    nexus.add_pipeline(stream)
+    print("\nCreating Data Processing Pipeline..")
     input_stage = InputStage()
     tran_stage = TransformStage()
     output_stage = OutputStage()
-    json.add_stage(input_stage)
-    json.add_stage(tran_stage)
-    json.add_stage(output_stage)
-    print("\n=== Multi-Format Data Processing ===\n")
-    json_output = json.process("{sensor: temp, val: 22.5, unit: °C}")
-    print(json_output) if json_output else print("")
-    csv = CSVAdapter("CSV")
-    csv.add_stage(input_stage)
-    csv.add_stage(tran_stage)
-    csv.add_stage(output_stage)
-    csv_output = csv.process("temp, 35, °C")
-    print(csv_output)
+    nexus.add_stages([input_stage, tran_stage, output_stage])
+    print("\n=== Multi-Format Data Processing ===")
+    nexus.process_data("{sensor: temp, val: 22.5, °C}", "JSON")
+    nexus.process_data("temp, 35, °C", "CSV")
+    nexus.process_data(["Initializing sensor: temp", "Received input: 111.9",
+                        "Extracting reading unit: °C"], "Stream")
+    print("Nexus Integration complete. All systems operational.")
 
 
 main()
