@@ -31,6 +31,8 @@ class TransformStage:
         print("Stage 2: Data transformation and enrichment")
 
     def process(self, data: Any) -> Any:
+        if not data:
+            return None
         for value in data.values():
             if isnumber(value):
                 num = float(value)
@@ -128,6 +130,9 @@ class NexusManager:
 
 
 class JSONAdapter(ProcessingPipeline):
+    def __init__(self, pipeline_id: str) -> None:
+        super().__init__(pipeline_id)
+
     def process(self, data: str) -> Any:
         res: Dict = dict()
         print(f"\nProcessing {self.pipeline_id} data through pipeline...")
@@ -148,6 +153,9 @@ class JSONAdapter(ProcessingPipeline):
 
 
 class StreamAdapter(ProcessingPipeline):
+    def __init__(self, pipeline_id: str) -> None:
+        super().__init__(pipeline_id)
+
     def process(self, data: Any) -> Any:
         res: Dict = dict()
         print(f"\nProcessing {self.pipeline_id} data through same pipeline...")
@@ -165,6 +173,9 @@ class StreamAdapter(ProcessingPipeline):
 
 
 class CSVAdapter(ProcessingPipeline):
+    def __init__(self, pipeline_id: str) -> None:
+        super().__init__(pipeline_id)
+
     def process(self, data: Any) -> Any:
         res: Dict = dict()
         print(f"\nProcessing {self.pipeline_id} data through  pipeline...")
@@ -206,7 +217,8 @@ Simulating pipeline failure...")
     print("Nexus Integration complete. All systems operational.")
 
 
-try:
-    main()
-except Exception as error:
-    print("[Error]:", error)
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        print("[Error]:", error)

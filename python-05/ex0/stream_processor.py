@@ -19,7 +19,7 @@ class NumericProcessor(DataProcessor):
 
     def process(self, data: Any) -> str:
         print(f"Processing data: {data}")
-        temp_lst: List = list()
+        temp_lst: List[int] = list()
         result = ""
         try:
             if self.validate(data):
@@ -41,16 +41,17 @@ class NumericProcessor(DataProcessor):
             return ""
 
     def validate(self, data: Any) -> bool:
-        return data.__class__.__name__ == "list" and\
-                (all(x.__class__.__name__ in ["int", "float"] for x in data)
-                    or data.__class__.__name__ in ["float", "int"])
+        return (data.__class__.__name__ == "list" and
+                len(data) and
+                (all(x.__class__.__name__ in ["int", "float"] for x in data))
+                or data.__class__.__name__ in ["float", "int"])
 
     def format_output(self, result: str) -> str:
         try:
             total = sum(int(x) for x in result.split(','))
             average = total / len(result.split(','))
             return f"Output: Processed {len(result.split(','))} numeric \
-values, sum={total} avg={average}"
+values, sum={total}, avg={average}"
         except (ValueError, TypeError):
             return "invalid data found"
 
@@ -82,7 +83,7 @@ characters, {word_count} words"
 
 class LogProcessor(DataProcessor):
     def process(self, data: Any) -> str:
-        res: Dict = {"Warning": [], "Error": [], "Log": []}
+        res: Dict[str, List[str]] = {"Warning": [], "Error": [], "Info": []}
         if self.validate(data):
             print(f"Processing data: \"{data}\"")
             print("Validation: Log entry verified")
@@ -90,10 +91,16 @@ class LogProcessor(DataProcessor):
                 for log in data:
                     if "Warning" in log:
                         res["Warning"].append(log)
-                if res["Warning"]:
-                    return "Alert: critical state detected"
+                    elif "Error" in log:
+                        res["Error"].append(log)
+                    elif "Info" in log:
+                        res["Info"].append(log)
+                if res["Error"]:
+                    return f"Alert: Error detected {res['Error'][0]}"
+                elif res["Warning"]:
+                    return f"Warning {len(res['Warning'])} issues were found"
                 else:
-                    return "everything is working perfectly"
+                    return "All system logs were processed without issue"
             except (KeyError, ValueError):
                 return "invalid data"
         return "invalid data"
@@ -121,9 +128,9 @@ def main() -> None:
     print(text_processor.format_output(text_res))
     print("\nInitializing Log Processor...")
     log_processor = LogProcessor()
-    logs: List = ["Alert server is under load",
-                  "Alert: server is down",
-                  "Warning: connection time out"]
+    logs: List[str] = ["Alert server is under load",
+                       "Alert: server is down",
+                       "Warning: connection time out"]
     log_res = log_processor.process(logs)
     print(log_processor.format_output(log_res))
     processors = [numeric_processor, text_processor, log_processor]

@@ -29,9 +29,9 @@ class SensorStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         print("\nInitializing Sensor Stream...")
         self.stream_id = stream_id
-        self.type = "humidity"
+        self.type: Optional[str] = "humidity"
         self.average = {"temp": [0, 0], "humidity": [0, 0], "pressure": [0, 0]}
-        print(f"Stream ID: {stream_id}, Type: Financial Data")
+        print(f"Stream ID: {stream_id}, Type: Environmental Data")
 
     def process_batch(self, data_batch: List[Any]) -> str:
         for sensor, value in data_batch:
@@ -59,7 +59,7 @@ class SensorStream(DataStream):
         return valid_data
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        res = dict()
+        res: Dict[str, Union[str, int, float]] = dict()
         for key in self.average.keys():
             try:
                 res[key] = self.average[key][1] / self.average[key][0]
@@ -141,7 +141,7 @@ error detected"
 
 class StreamProcessor:
     def __init__(self) -> None:
-        self.streams = []
+        self.streams: List = []
 
     def add_stream(self, stream: DataStream) -> None:
         self.streams.append(stream)
@@ -150,6 +150,7 @@ class StreamProcessor:
         for stream in self.streams:
             if stream.stream_id == stream_id:
                 return stream
+        return None
 
     def process_data(self, stream_id: str,  data_batch: List[Any],
                      criteria: Optional[str]) -> None:
@@ -168,7 +169,7 @@ class StreamProcessor:
         print(process_output)
         print(", ".join([f"{key}: {value}" for key, value in stats.items()]))
 
-    def process_mixed_data(self, data_batch: List[Any]):
+    def process_mixed_data(self, data_batch: List[Any]) -> None:
         event = []
         sensor = []
         trans = []
