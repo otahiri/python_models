@@ -9,7 +9,7 @@ class ArtifactCard(Card):
         self.durability = durability
         self.effect = effect
         self.active = False
-        self.type = Types.ARTIFACT
+        self.type = Types.ARTIFACT.value
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()
