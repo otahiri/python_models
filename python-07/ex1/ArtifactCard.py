@@ -13,6 +13,9 @@ class ArtifactCard(Card):
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()
+        if self.durability <= 0:
+            print("durability depleted")
+            return res
         try:
             mana_left = game_state["mana"]
             playable = super().is_playable(mana_left)
@@ -22,8 +25,9 @@ class ArtifactCard(Card):
                 res["mana_used"] = self.cost
                 res["effect"] = self.effect
                 return res
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, TypeError):
             print("Invalid game state")
+            exit(1)
         return res
 
     def activate_ability(self) -> dict:

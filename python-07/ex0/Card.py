@@ -4,9 +4,9 @@ from enum import Enum
 
 
 class Types(Enum):
-    CREATURE = "Creature"
-    SPELL = "Spell"
-    ARTIFACT = "Artifact"
+    CREATURE = "creature"
+    SPELL = "spell"
+    ARTIFACT = "artifact"
 
 
 class Card(ABC):

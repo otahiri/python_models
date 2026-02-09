@@ -1,5 +1,5 @@
 from typing import Dict
-from CreatureCard import CreatureCard
+from ex0.CreatureCard import CreatureCard
 
 
 def main() -> None:
@@ -9,6 +9,7 @@ def main() -> None:
     print("\nTesting Abstract Base Class Design:\n")
     print(f"CreatureCard Info: {vars(dragon)}")
     print("\nPlaying Fire Dragon with 6 mana available:")
+    print(f"Playable: {dragon.is_playable(game_state["mana"])}")
     res = dragon.play(game_state)
     print(f"Play result: {res}") if res.keys() else None
     print("\nFire Dragon attacks Goblin Warrior:")

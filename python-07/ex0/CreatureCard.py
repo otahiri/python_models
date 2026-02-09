@@ -1,10 +1,15 @@
 from typing import Dict
-from Card import Card, Types
+from ex0 import Card, Types
 
 
 class CreatureCard(Card):
     def __init__(self, name: str, cost: int, rarity: str, attack: int,
                  health: int) -> None:
+        if not all([isinstance(name, str), isinstance(cost, int),
+                    isinstance(rarity, str), isinstance(attack, int),
+                    isinstance(health, int)]):
+            print("Invalid attribute")
+            exit(1)
         super().__init__(name, cost, rarity)
         self.type = Types.CREATURE.value
         self.set_attack(attack)
@@ -35,8 +40,9 @@ class CreatureCard(Card):
                 res["effect"] = "Creature summoned to \
 battlefield"
                 return res
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, TypeError):
             print("Invalid game state")
+            exit(1)
         return res
 
     def attack_target(self, target) -> dict:

@@ -12,11 +12,11 @@ class Effect(Enum):
 
     @staticmethod
     def get_message(power: int, effect_type: str) -> str:
-        if effect_type == "heal":
+        if effect_type.lower() == "heal":
             return f"healed target by {power}"
-        elif effect_type == "damage":
+        elif effect_type.lower() == "damage":
             return f"dealt {power} damage to target"
-        elif effect_type in ["buff", "debuff"]:
+        elif effect_type.lower() in ["buff", "debuff"]:
             return f"{effect_type} applied to target for {power} turns"
         else:
             print("Invalid effect")
@@ -42,15 +42,15 @@ class SpellCard(Card):
         try:
             mana_left = game_state["mana"]
             playable = super().is_playable(mana_left)
-            print(f"Playable: {playable}")
             if playable:
                 res["card_played"] = self.name
                 res["mana_used"] = self.cost
                 res["effect"] = Effect.get_message(self.power,
                                                    self.effect_type)
                 return res
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, TypeError):
             print("Invalid game state")
+            exit(1)
         return res
 
     def resolve_effect(self, targets: list) -> dict:
