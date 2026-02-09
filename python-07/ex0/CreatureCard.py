@@ -1,12 +1,12 @@
 from typing import Dict
-from Card import Card
+from Card import Card, Types
 
 
 class CreatureCard(Card):
     def __init__(self, name: str, cost: int, rarity: str, attack: int,
                  health: int) -> None:
         super().__init__(name, cost, rarity)
-        self.type = "Creature"
+        self.type = Types.CREATURE.value
         self.set_attack(attack)
         self.set_health(health)
 
@@ -29,7 +29,6 @@ class CreatureCard(Card):
         try:
             mana_left = game_state["mana"]
             playable = super().is_playable(mana_left)
-            print(f"Playable: {playable}")
             if playable:
                 res["card_played"] = self.name
                 res["mana_used"] = self.cost

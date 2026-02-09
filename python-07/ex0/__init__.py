@@ -1,4 +1,4 @@
-from .Card import Card
+from .Card import Card, Types
 
 
-__all__ = ["Card"]
+__all__ = ["Card", "Types"]

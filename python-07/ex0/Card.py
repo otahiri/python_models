@@ -1,5 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Tuple
+from enum import Enum
+
+
+class Types(Enum):
+    CREATURE = "Creature"
+    SPELL = "Spell"
+    ARTIFACT = "Artifact"
 
 
 class Card(ABC):

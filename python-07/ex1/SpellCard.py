@@ -1,14 +1,68 @@
-from ex0 import Card
+from enum import Enum
+from ex0 import Card, Types
+from ex0.CreatureCard import CreatureCard
+from typing import Dict
+
+
+class Effect(Enum):
+    MYTHIC = 4
+    LEGENDARY = 3
+    RARE = 2
+    COMMON = 1
+
+    @staticmethod
+    def get_message(power: int, effect_type: str) -> str:
+        if effect_type == "heal":
+            return f"healed target by {power}"
+        elif effect_type == "damage":
+            return f"dealt {power} damage to target"
+        elif effect_type in ["buff", "debuff"]:
+            return f"{effect_type} applied to target for {power} turns"
+        else:
+            print("Invalid effect")
+            exit(1)
 
 
 class SpellCard(Card):
     def __init__(self, name: str, cost: int, rarity: str,
                  effect_type: str) -> None:
         super().__init__(name, cost, rarity)
+        self.type = Types.SPELL.value
         self.effect_type = effect_type
+        self.power = 0
+        for member in Effect:
+            if member.name.lower() == rarity:
+                self.power = member.value
+        if not self.power:
+            print("Invalid rarity")
+            exit(1)
 
     def play(self, game_state: dict) -> dict:
-        return super().play(game_state)
+        res: Dict = dict()
+        try:
+            mana_left = game_state["mana"]
+            playable = super().is_playable(mana_left)
+            print(f"Playable: {playable}")
+            if playable:
+                res["card_played"] = self.name
+                res["mana_used"] = self.cost
+                res["effect"] = Effect.get_message(self.power,
+                                                   self.effect_type)
+                return res
+        except (KeyError, ValueError):
+            print("Invalid game state")
+        return res
 
     def resolve_effect(self, targets: list) -> dict:
-        pass
+        res:  Dict = dict()
+        for target in targets:
+            if not isinstance(target, CreatureCard):
+                print("Invalid target found")
+                exit(1)
+            res[target.name] = target.name + \
+                Effect.get_message(self.power, self.effect_type)
+            if self.effect_type == "heal":
+                target.health += self.power
+            elif self.effect_type == "damage":
+                target.health -= self.power
+        return res
