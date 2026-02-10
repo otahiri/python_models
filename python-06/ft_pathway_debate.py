@@ -3,7 +3,7 @@ from alchemy import transmutation
 import alchemy
 
 
-def absolute_import_test():
+def absolute_import_test() -> None:
     print("\nTesting Absolute Imports (from basic.py):")
     print(f"lead_to_gold(): {lead_to_gold()}")
     print(f"stone_to_gem(): {stone_to_gem()}")
