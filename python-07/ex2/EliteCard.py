@@ -28,14 +28,36 @@ battlefield"
         return res
 
     def cast_spell(self, spell_name: str, targets: list) -> dict:
-        pass
+        mana_cost = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        res: Dict = dict()
+        res["caster"] = self.name
+        res["spell"] = spell_name
+        res["targets"] = targets
+        res["mana_used"] = mana_cost[self.rarity]
+        return res
 
-    def guard(self, damage: int) -> Dict:
+    def defend(self, incoming_damage: int) -> dict:
         defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
         res: Dict = dict()
-        self.health -= damage - defense[self.rarity]
+        self.health -= incoming_damage - defense[self.rarity]
         res["defender"] = self.name
-        res["damage_taken"] = damage - defense[self.rarity]
+        res["damage_taken"] = incoming_damage - defense[self.rarity]
         res["damage_blocked"] = defense[self.rarity]
         res["still_alive"] = self.health > 0
+        return res
+
+    def get_combat_stats(self) -> dict:
+        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        res: Dict = dict()
+        res["fighter"] = self.name
+        res["attack"] = self.attack
+        res["defense"] = defense[self.rarity]
+        return res
+
+    def channel_mana(self, amount: int) -> dict:
+        res: Dict = dict()
+        res["channeled"] = amount
+        res["total_mana"] = self.
+        int("2")
+        
         return res
