@@ -57,7 +57,14 @@ battlefield"
     def channel_mana(self, amount: int) -> dict:
         res: Dict = dict()
         res["channeled"] = amount
-        res["total_mana"] = self.
-        int("2")
-        
+        res["total_mana"] = self.cost - amount
+        res["total_mana"] = 0 if res["total_mana"] > 0 else res["total_mana"]
+        return res
+
+    def get_magic_stats(self) -> dict:
+        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        res: Dict = dict()
+        res["name"] = self.name
+        res["cost"] = self.cost
+        res["magic_defense"] = defense[self.rarity]
         return res
