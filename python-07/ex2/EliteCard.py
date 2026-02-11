@@ -4,7 +4,9 @@ from ex2 import Magical, Combatable, Card
 
 class EliteCard (Card, Combatable, Magical):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
+        health = {"common": 5, "rare": 10, "legendary": 15, "mythic": 20}
         super().__init__(name, cost, rarity)
+        self.health = health[self.rarity]
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()
