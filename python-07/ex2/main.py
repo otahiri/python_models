@@ -6,6 +6,8 @@ import inspect
 def main() -> None:
     arcane_warrior = EliteCard("Arcane Warrior", 10, "mythic")
     enemy = CreatureCard("Enemy", 3, "rare", 3, 10)
+    enemy_one = CreatureCard("Enemy1", 3, "rare", 3, 10)
+    enemy_two = CreatureCard("Enemy2", 3, "rare", 3, 10)
     bases = arcane_warrior.__class__.__bases__
     classes = dict()
     for base in bases:
@@ -18,5 +20,11 @@ def main() -> None:
     print("Combat phase:")
     print(f"Attack result: {arcane_warrior.attack(enemy)}")
     print(f" Defense result: {arcane_warrior.defend(5)}")
+    print("Magic phase:")
+    print(f"Spell cast: {arcane_warrior.cast_spell('Fireball', [enemy_one, enemy_two])}")
+    print(f"Mana channel: {arcane_warrior.channel_mana(3)}")
+    print("\nMultiple interface implementation successful!")
+
+
 if __name__ == "__main__":
     main()

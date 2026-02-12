@@ -5,8 +5,10 @@ from ex2 import Magical, Combatable, Card
 class EliteCard (Card, Combatable, Magical):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
         health = {"common": 5, "rare": 10, "legendary": 15, "mythic": 20}
+        atk = {"common": 1, "rare": 2, "legendary": 3, "mythic": 5}
         super().__init__(name, cost, rarity)
         self.health = health[self.rarity]
+        self.atk = atk[self.rarity]
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()
@@ -24,8 +26,8 @@ battlefield"
     def attack(self, target) -> dict:
         res: Dict = dict()
         res["attacker"] = self.name
-        res["target"] = target
-        res["damage"] = self.attack
+        res["target"] = target.name
+        res["damage"] = self.atk
         res["combat_type"] = "melee"
         return res
 
@@ -34,7 +36,7 @@ battlefield"
         res: Dict = dict()
         res["caster"] = self.name
         res["spell"] = spell_name
-        res["targets"] = targets
+        res["targets"] = [target.name for target in targets]
         res["mana_used"] = mana_cost[self.rarity]
         return res
 
