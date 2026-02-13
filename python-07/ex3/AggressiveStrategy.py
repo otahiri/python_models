@@ -10,4 +10,7 @@ class AggressiveStrategy(GameStrategy):
         return self.__class__.__name__
 
     def prioritize_targets(self, available_targets: list) -> list:
-        
+        try:
+            res = [target for target in available_targets if target]
+
+        return 
