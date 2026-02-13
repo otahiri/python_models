@@ -11,7 +11,10 @@ def main() -> None:
     bases = arcane_warrior.__class__.__bases__
     classes = dict()
     for base in bases:
-        classes[base.__name__] = [x[0] for x in inspect.getmembers(base, lambda a:inspect.isfunction(a)) if not x[0].startswith("__")]
+        classes[base.__name__] = [x[0] for x in
+                                  inspect.getmembers(base, lambda a:
+                                                     inspect.isfunction(a))
+                                  if not x[0].startswith("__")]
     print("\n=== DataDeck Ability System ===\n")
     print(f"{arcane_warrior.__class__.__name__} capabilities:")
     for key, value in classes.items():
@@ -21,7 +24,8 @@ def main() -> None:
     print(f"Attack result: {arcane_warrior.attack(enemy)}")
     print(f" Defense result: {arcane_warrior.defend(5)}")
     print("Magic phase:")
-    print(f"Spell cast: {arcane_warrior.cast_spell('Fireball', [enemy_one, enemy_two])}")
+    print(f"Spell cast: \
+{arcane_warrior.cast_spell('Fireball', [enemy_one, enemy_two])}")
     print(f"Mana channel: {arcane_warrior.channel_mana(3)}")
     print("\nMultiple interface implementation successful!")
 
