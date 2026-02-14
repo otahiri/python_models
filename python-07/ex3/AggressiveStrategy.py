@@ -10,10 +10,11 @@ class AggressiveStrategy(GameStrategy):
         atk = {"common": 1, "rare": 2, "legendary": 3, "mythic": 5}
         targets = self.prioritize_targets(battlefield)
         res: Dict = dict()
-        res["cards_played"] = [card for card in hand if isinstance(card, Card)]
+        res["cards_played"] = [card.name for card in hand
+                               if isinstance(card, Card)]
         res["mana_used"] = sum([card.cost for card in hand if
                                 isinstance(card, Card)])
-        res["targets_attacked"] = targets
+        res["targets_attacked"] = [card.name for card in targets]
         res["damage_dealt"] = sum(atk[card.rarity] for card in hand
                                   if isinstance(card, Card)) * len(targets)
         return res

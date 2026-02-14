@@ -42,7 +42,11 @@ class FantasyCardFactory(CardFactory):
         return deck
 
     def get_supported_types(self) -> dict:
-        funcs = [func[0] for func in
+        funcs = [func[0].split("_")[1] for func in
                  inspect.getmembers(self.__class__,
-                                    lambda f: inspect.isfunction(f))]
-        return
+                                    lambda f: inspect.isfunction(f))
+                 if len(func[0].split("_")) == 2]
+        res: Dict = dict()
+        res["types"] = funcs
+        res["count"] = len(funcs)
+        return res
