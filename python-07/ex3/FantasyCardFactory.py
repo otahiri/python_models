@@ -1,4 +1,5 @@
 import random
+import inspect
 from typing import Dict
 from ex3 import CardFactory
 from ex1 import CreatureCard, ArtifactCard, SpellCard
@@ -41,4 +42,7 @@ class FantasyCardFactory(CardFactory):
         return deck
 
     def get_supported_types(self) -> dict:
-        
+        funcs = [func[0] for func in
+                 inspect.getmembers(self.__class__,
+                                    lambda f: inspect.isfunction(f))]
+        return
