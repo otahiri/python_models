@@ -25,7 +25,7 @@ class GameEngine:
         res: Dict = dict()
         res["Factory"] = self.factory.__class__.__name__
         res["Strategy"] = self.strategy.get_strategy_name()
-        types: Dict = {"creature": [], "spell": [], "artifact": []}
+        types: Dict = {"Creature": [], "Spell": [], "Artifact": []}
         for card in self.deck.deck:
             types[card.type].append(card.name)
         res["Available types"] = types

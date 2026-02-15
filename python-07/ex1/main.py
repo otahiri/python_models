@@ -18,7 +18,6 @@ def main() -> None:
         card = deck.draw_card()
         print(f"Play result: {card.play(game_state)}")
         deck.remove_card(card.name)
-    deck.draw_card()
     print("\nPolymorphism in action: Same interface, different card \
 behaviors!")
 

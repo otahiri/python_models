@@ -1,3 +1,4 @@
+import random
 from typing import Dict
 from ex2 import Magical, Combatable, Card
 from enum import Enum
@@ -13,10 +14,12 @@ class Attack(Enum):
 
 class EliteCard (Card, Combatable, Magical):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
-        health = {"common": 5, "rare": 10, "legendary": 15, "mythic": 20}
+        base = random.choice(range(1, 5))
+        health = {"common": base + 5, "rare": base + 10,
+                  "legendary": base + 15, "mythic": base + 20}
         super().__init__(name, cost, rarity)
         self.health = health[self.rarity]
-        self.atk = Attack.__getitem__(self.rarity).value
+        self.atk = Attack.__getitem__(self.rarity.upper()).value
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()
@@ -49,7 +52,7 @@ battlefield"
         return res
 
     def defend(self, incoming_damage: int) -> dict:
-        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        defense = {"common": 1, "rare": 1, "legendary": 2, "mythic": 3}
         res: Dict = dict()
         self.health -= incoming_damage - defense[self.rarity]
         res["defender"] = self.name
@@ -70,7 +73,7 @@ battlefield"
         res: Dict = dict()
         res["channeled"] = amount
         res["total_mana"] = self.cost - amount
-        res["total_mana"] = 0 if res["total_mana"] > 0 else res["total_mana"]
+        res["total_mana"] = 0 if res["total_mana"] < 0 else res["total_mana"]
         return res
 
     def get_magic_stats(self) -> dict:

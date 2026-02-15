@@ -33,7 +33,7 @@ class Deck:
     def draw_card(self) -> Card:
         try:
             card = self.deck[0]
-            print(f"\nDrew: {card.name}({card.type})")
+            print(f"\nDrew: {card.name} ({card.type})")
             return card
         except IndexError:
             print("empty deck")
@@ -42,9 +42,9 @@ class Deck:
     def get_deck_stats(self) -> dict:
         res: Dict = dict()
         res['total_cards'] = len(self.deck)
-        res['creatures'] = len([x for x in self.deck if x.type == "creature"])
-        res['spells'] = len([x for x in self.deck if x.type == "spell"])
-        res['artifacts'] = len([x for x in self.deck if x.type == "artifact"])
+        res['creatures'] = len([x for x in self.deck if x.type == "Creature"])
+        res['spells'] = len([x for x in self.deck if x.type == "Spell"])
+        res['artifacts'] = len([x for x in self.deck if x.type == "Artifact"])
         res['avg_cost'] = float(math.ceil(sum([x.cost for x in self.deck])
                                 / len(self.deck)))
         return res

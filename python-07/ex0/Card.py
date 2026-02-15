@@ -4,20 +4,23 @@ from enum import Enum
 
 
 class Types(Enum):
-    CREATURE = "creature"
-    SPELL = "spell"
-    ARTIFACT = "artifact"
+    CREATURE = "Creature"
+    SPELL = "Spell"
+    ARTIFACT = "Artifact"
 
 
 class Card(ABC):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
+        if rarity not in ["common", "rare", "legendary", "mythic"]:
+            print("invalid rarity detected")
+            exit(1)
         self.name = name
         self.cost = cost
         self.rarity = rarity
 
-    @abstractmethod
     def play(self, game_state: dict) -> dict:
         ...
+    play = abstractmethod(play)
 
     def get_card_info(self) -> Tuple:
         return self.name, self.cost, self.rarity
