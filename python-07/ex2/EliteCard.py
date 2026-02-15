@@ -1,14 +1,22 @@
 from typing import Dict
 from ex2 import Magical, Combatable, Card
+from enum import Enum
+
+
+class Attack(Enum):
+    COMMON = 1
+    RARE = 2
+    SUPER_RARE = 3
+    LEGENDARY = 4
+    MYTHIC = 5
 
 
 class EliteCard (Card, Combatable, Magical):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
         health = {"common": 5, "rare": 10, "legendary": 15, "mythic": 20}
-        atk = {"common": 1, "rare": 2, "legendary": 3, "mythic": 5}
         super().__init__(name, cost, rarity)
         self.health = health[self.rarity]
-        self.atk = atk[self.rarity]
+        self.atk = Attack.__getitem__(self.rarity).value
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()

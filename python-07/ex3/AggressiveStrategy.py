@@ -8,7 +8,8 @@ from enum import Enum
 class Attack(Enum):
     COMMON = 1
     RARE = 2
-    LEGENDARY = 3
+    SUPER_RARE = 3
+    LEGENDARY = 4
     MYTHIC = 5
 
 
