@@ -23,9 +23,9 @@ def main() -> None:
     game.deck.remove_card("fireball")
     game.deck.remove_card("dragon")
     game.deck.remove_card("goblin")
-    game.deck.add_card(CreatureCard("Goblin Warrior", 2, "mythic", 8, 10))
-    game.deck.add_card(SpellCard("Lightning Bolt", 3, "legendary", "damage"))
-    game.deck.add_card(CreatureCard("Fire Dragon", 5, "rare", 5, 10))
+    game.deck.add_card(CreatureCard("Goblin Warrior", 2, "Mythic", 8, 10))
+    game.deck.add_card(SpellCard("Lightning Bolt", 3, "Legendary", "damage"))
+    game.deck.add_card(CreatureCard("Fire Dragon", 5, "Rare", 5, 10))
     hand = [f"{card.name} ({card.cost})" for card in game.deck.deck]
     print(f"Hand: [{', '.join(hand)}]")
     game.enemy.add_card(game.factory.create_creature())

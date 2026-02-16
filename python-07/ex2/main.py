@@ -4,10 +4,10 @@ import inspect
 
 
 def main() -> None:
-    arcane_warrior = EliteCard("Arcane Warrior", 10, "mythic")
-    enemy = CreatureCard("Enemy", 3, "rare", 3, 10)
-    enemy_one = CreatureCard("Enemy1", 3, "rare", 3, 10)
-    enemy_two = CreatureCard("Enemy2", 3, "rare", 3, 10)
+    arcane_warrior = EliteCard("Arcane Warrior", 10, "Mythic")
+    enemy = CreatureCard("Enemy", 3, "Rare", 3, 10)
+    enemy_one = CreatureCard("Enemy1", 3, "Rare", 3, 10)
+    enemy_two = CreatureCard("Enemy2", 3, "Rare", 3, 10)
     bases = arcane_warrior.__class__.__bases__
     classes = dict()
     for base in bases:

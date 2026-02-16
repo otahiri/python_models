@@ -15,8 +15,9 @@ class Attack(Enum):
 class EliteCard (Card, Combatable, Magical):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
         base = random.choice(range(1, 5))
-        health = {"common": base + 5, "rare": base + 10,
-                  "legendary": base + 15, "mythic": base + 20}
+        health = {"Common": base + 5, "Rare": base + 10,
+                  "Super_rare": base + 15,
+                  "Legendary": base + 20, "Mythic": base + 25}
         super().__init__(name, cost, rarity)
         self.health = health[self.rarity]
         self.atk = Attack.__getitem__(self.rarity.upper()).value
@@ -43,7 +44,7 @@ battlefield"
         return res
 
     def cast_spell(self, spell_name: str, targets: list) -> dict:
-        mana_cost = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        mana_cost = {"Common": 1, "Rare": 2, "Legendary": 3, "Mythic": 4}
         res: Dict = dict()
         res["caster"] = self.name
         res["spell"] = spell_name
@@ -52,7 +53,7 @@ battlefield"
         return res
 
     def defend(self, incoming_damage: int) -> dict:
-        defense = {"common": 1, "rare": 1, "legendary": 2, "mythic": 3}
+        defense = {"Common": 1, "Rare": 1, "Legendary": 2, "Mythic": 3}
         res: Dict = dict()
         self.health -= incoming_damage - defense[self.rarity]
         res["defender"] = self.name
@@ -62,7 +63,7 @@ battlefield"
         return res
 
     def get_combat_stats(self) -> dict:
-        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        defense = {"Common": 1, "Rare": 2, "Legendary": 3, "Mythic": 4}
         res: Dict = dict()
         res["fighter"] = self.name
         res["attack"] = self.attack
@@ -77,7 +78,7 @@ battlefield"
         return res
 
     def get_magic_stats(self) -> dict:
-        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        defense = {"Common": 1, "Rare": 2, "Legendary": 3, "Mythic": 4}
         res: Dict = dict()
         res["name"] = self.name
         res["cost"] = self.cost

@@ -46,7 +46,7 @@ class TournamentCard(Card, Combatable, Rankable):
         return res
 
     def defend(self, incoming_damage: int) -> dict:
-        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        defense = {"Common": 1, "Rare": 2, "Legendary": 3, "Mythic": 4}
         res: Dict = dict()
         self.health -= incoming_damage - defense[self.rarity]
         res["defender"] = self.name
@@ -56,7 +56,7 @@ class TournamentCard(Card, Combatable, Rankable):
         return res
 
     def get_combat_stats(self) -> dict:
-        defense = {"common": 1, "rare": 2, "legendary": 3, "mythic": 4}
+        defense = {"Common": 1, "Rare": 2, "Legendary": 3, "Mythic": 4}
         res: Dict = dict()
         res["fighter"] = self.name
         res["attack"] = self.attack

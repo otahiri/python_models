@@ -6,9 +6,9 @@ def main() -> None:
     game_state = {"mana": 10, "my_turn": True, }
     print("\n=== DataDeck Deck Builder ===\n")
     print("Building deck with different card types...")
-    dragon = CreatureCard("Fire Dragon", 5, "legendary", 5, 10)
-    lightning = SpellCard("Lightning Bolt", 3, "legendary", "damage")
-    mana_crystal = ArtifactCard("Mana Crystal", 2, "common", 3, "buff", )
+    dragon = CreatureCard("Fire Dragon", 5, "Legendary", 5, 10)
+    lightning = SpellCard("Lightning Bolt", 3, "Legendary", "damage")
+    mana_crystal = ArtifactCard("Mana Crystal", 2, "Common", 3, "buff", )
     deck.add_card(lightning)
     deck.add_card(mana_crystal)
     deck.add_card(dragon)

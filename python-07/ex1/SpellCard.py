@@ -26,15 +26,12 @@ def get_message(power: int, effect_type: str) -> str:
 class SpellCard(Card):
     def __init__(self, name: str, cost: int, rarity: str,
                  effect_type: str) -> None:
-        if rarity not in ["common", "rare", "legendary", "mythic"]:
-            print("invalid rarity detected")
-            exit(1)
         super().__init__(name, cost, rarity)
         self.type = Types.SPELL.value
         self.effect_type = effect_type
         self.power = 0
         for member in Effect:
-            if member.name.lower() == rarity:
+            if member.name.lower() == rarity.lower():
                 self.power = member.value
         if not self.power:
             print("Invalid rarity")

@@ -5,8 +5,8 @@ def main() -> None:
     print("\n=== DataDeck Tournament Platform ===\n")
     print("Registering Tournament Cards...")
     tournament = TournamentPlatform()
-    dragon = TournamentCard("Fire Dragon", 9, "legendary", "dragon_001")
-    wizard = TournamentCard("Ice Wizard ", 9, "super_rare", "wizard_001")
+    dragon = TournamentCard("Fire Dragon", 9, "Legendary", "dragon_001")
+    wizard = TournamentCard("Ice Wizard ", 9, "Super_rare", "wizard_001")
     tournament.deck.append(dragon)
     tournament.deck.append(wizard)
     for card in tournament.deck:
