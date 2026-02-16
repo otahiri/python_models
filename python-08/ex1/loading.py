@@ -11,7 +11,7 @@ def main() -> None:
     print("Checking dependencies:")
     count = 1000
     requests.get("https://www.google.com")
-    file_name = "matrix\\_analysis.png"
+    file_name = "matrix_analysis.png"
     for p in packages:
         print(f"[OK] {p} ({metadata.version(p[0])}) - {p[1]}")
     x = 2 * nm.random.rand(count)

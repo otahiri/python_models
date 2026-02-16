@@ -6,6 +6,9 @@ def main() -> None:
     base = sys.base_prefix
     print(base)
     print(current)
+    # to check if you are inside a Virtual environment you need to compare
+    # prefix and base prefix if they are the same then you are not inside a
+    # Virtual environment else you are inside a Virtual environment
     if current == base:
         print("MATRIX STATUS: You're still plugged in\n")
         print(f"Current Python: {current}")
