@@ -1,15 +1,20 @@
 import numpy as nm
-import pandas
 import requests
+import pandas as pd
 from matplotlib import pyplot as pt
 
 
 def main() -> None:
-    product = requests.get("https://dummyjson.com/products").json()["product"]
-    data = pandas.DataFrame(product)
-    data.plot.scatter(x="price", y="rating")
-    pt.xlabel("Price")
+    x = 2 * nm.random.rand(100)
+    y = 10 + 3 * x + nm.random.rand(100)
+    a, b = nm.polyfit(x, y, 1)
+    df = pd.DataFrame(data=x, columns=['Feature_X'])
+    df["Target_y"] = y
+    print(df)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ModuleNotFoundError as e:
+        print(e)
