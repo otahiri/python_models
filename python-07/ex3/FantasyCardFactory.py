@@ -27,7 +27,7 @@ class FantasyCardFactory(CardFactory):
             artifact = ArtifactCard(str(name_or_power), 3, "Rare", 2,
                                     "buff applied to the player")
         else:
-            artifact = ArtifactCard("artifact", 3, "Common", 2,
+            artifact = ArtifactCard("Artifact", 3, "Common", 2,
                                     "buff applied to the player")
         return artifact
 
