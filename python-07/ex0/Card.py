@@ -11,7 +11,8 @@ class Types(Enum):
 
 class Card(ABC):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
-        if rarity not in ["common", "rare", "legendary", "mythic"]:
+        if rarity not in ["common", "rare", "legendary", "super_rare",
+                          "mythic"]:
             print("invalid rarity detected")
             exit(1)
         self.name = name

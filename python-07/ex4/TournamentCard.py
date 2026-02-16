@@ -1,3 +1,4 @@
+import random
 from typing import Dict
 from enum import Enum
 from ex4 import Rankable
@@ -20,6 +21,9 @@ class TournamentCard(Card, Combatable, Rankable):
         self.atk = Attack.__getitem__(self.rarity.upper()).value
         self.loses = 0
         self.wins = 0
+        self.rating = 1000 + (self.atk * 50)
+        base = random.choice(range(5))
+        self.health = base + (5 * self.atk)
 
     def play(self, game_state: dict) -> dict:
         res: Dict = dict()
@@ -60,7 +64,7 @@ class TournamentCard(Card, Combatable, Rankable):
         return res
 
     def calculate_rating(self) -> int:
-        return 1000 + (self.atk * 50)
+        return self.rating
 
     def get_tournament_stats(self) -> dict:
         res: Dict = self.get_rank_info()

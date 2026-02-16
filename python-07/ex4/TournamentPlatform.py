@@ -36,6 +36,8 @@ class TournamentPlatform:
         loser.loses += 1
         res["winner"] = winner.id
         res["loser"] = loser.id
+        winner.rating += 16
+        loser.rating -= 16
         res["winner_rating"] = winner.calculate_rating()
         res["loser_rating"] = loser.calculate_rating()
         self.matches += 1

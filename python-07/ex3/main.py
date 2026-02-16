@@ -34,7 +34,7 @@ def main() -> None:
     action = game.strategy.execute_turn([game.deck.deck[0],
                                          game.deck.deck[1]], game.enemy.deck)
     turns += 1
-    print("Actions", action)
+    print("Actions: ", action)
     print("\nGame Report:")
     report: Dict = {"turns_simulated": turns,
                     "strategy_used": game.strategy.get_strategy_name(),
@@ -46,4 +46,7 @@ Maximum flexibility achieved!")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
