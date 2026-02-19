@@ -64,7 +64,7 @@ def print_info(mission: SpaceMission) -> None:
 {member.specialization}")
 
 
-def main():
+def main() -> None:
     print("Space Mission Crew Validation")
     print("=========================================")
     print("Valid mission created:")
@@ -115,4 +115,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
