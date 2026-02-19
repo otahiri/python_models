@@ -21,15 +21,21 @@ def main() -> None:
                  {'name': 'Water Chalice', 'power': 65, 'type': 'weapon'},
                  {'name': 'Shadow Blade', 'power': 119, 'type': 'relic'},
                  {'name': 'Storm Crown', 'power': 98, 'type': 'weapon'}]
-    mages = [{'name': 'Rowan', 'power': 95, 'element': 'light'},
-             {'name': 'River', 'power': 68, 'element': 'light'},
-             {'name': 'Casey', 'power': 58, 'element': 'fire'},
-             {'name': 'Storm', 'power': 62, 'element': 'ice'},
-             {'name': 'Luna', 'power': 75, 'element': 'light'}]
     spells = ['lightning', 'tsunami', 'earthquake', 'darkness']
     print("\nTesting artifact sorter...")
-    print(f"{artifact_sorter(artifacts)}")
+    sorted_artifacts = artifact_sorter(artifacts)
+    last = sorted_artifacts[-1]
+    before_last = sorted_artifacts[-2]
+    print(f"{last['name']} ({last['power']}) comes before \
+{before_last['name']} ({before_last['power']})")
+    print("\nTesting spell transformer...")
+    print(" ".join(spell_transformer(spells)))
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except IndexError as e:
+        print(e)
+    except (ValueError, KeyError, TypeError) as e:
+        print(e)
