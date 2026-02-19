@@ -1,11 +1,10 @@
 import os
-import sys
 from dotenv import load_dotenv
 
 
 def main() -> None:
     load_dotenv()
-    print("\nORACLE STATUS: Reading the Matrix...", file=sys.)
+    print("\nORACLE STATUS: Reading the Matrix...")
     print("\nConfiguration loaded:")
     print(f"Mode: {os.getenv('MATRIX_MODE')}")
     print(f"Database: {os.getenv('DATABASE_URL')}")

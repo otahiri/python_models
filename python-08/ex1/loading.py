@@ -5,15 +5,15 @@ def main() -> None:
     from matplotlib import pyplot as pt
     from importlib import metadata
     print("\nLOADING STATUS: Loading programs...\n")
-    packages = [("pandas", "Data manipulation ready"),
-                ("requests", "Network access ready"),
-                ("matplotlib", "Visualization ready")]
+    packages = [["pandas", "Data manipulation ready"],
+                ["requests", "Network access ready"],
+                ["matplotlib", "Visualization ready"]]
     print("Checking dependencies:")
     count = 1000
     requests.get("https://www.google.com")
     file_name = "matrix_analysis.png"
     for p in packages:
-        print(f"[OK] {p} ({metadata.version(p[0])}) - {p[1]}")
+        print(f"[OK] {p[0]} ({metadata.version(p[0])}) - {p[1]}")
     x = 2 * nm.random.rand(count)
     y = 10 + 3 * x + nm.random.rand(count)
     df = pd.DataFrame(data=x, columns=['Feature_X'])
@@ -22,7 +22,7 @@ def main() -> None:
     pt.xlabel('Feature X')
     pt.ylabel('Target Y')
     pt.title("Relationship between income and spending")
-    pt.savefig("data.png")
+    pt.savefig(file_name)
     print("\nAnalyzing Matrix data...")
     print(f"Processing {count} data points...")
     print("Generating visualization...")
