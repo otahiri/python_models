@@ -1,5 +1,4 @@
 from enum import Enum
-import math
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel, Field, ValidationError, model_validator
@@ -40,9 +39,12 @@ class SpaceMission(BaseModel):
         if not any([crew.rank in [Rank.COMMANDER, Rank.CAPTAIN] for crew in
                     self.crew]):
             raise ValueError("Must have at least one Commander or Captain")
-        if self.duration_days > 365 and not len(self.crew) // 2 > len([m for m in self.crew if m.years_experience >= 5]):
-            raise ValueError("Long missions (> 365 days) need 50% experienced\
-crew (5+ years)")
+        if self.duration_days > 365:
+            crew_half = len(self.crew) // 2
+            exp_crew = len([m for m in self.crew if m.years_experience >= 5])
+            if crew_half >= exp_crew:
+                raise ValueError("Long missions (> 365 days) need 50% \
+experienced crew (5+ years)")
         if not all([m.is_active for m in self.crew]):
             raise ValueError("All crew members must be active")
 
@@ -63,24 +65,53 @@ def print_info(mission: SpaceMission) -> None:
 
 
 def main():
-    sarah = CrewMember(member_id="SARAH001", name="Sarah Connor",
-                       rank=Rank.COMMANDER, specialization="Mission Command",
-                       years_experience=8, age=30)
-    john = CrewMember(member_id="JOHN001", name="John Smith",
-                      rank=Rank.LIEUTENANT, specialization="Navigation",
-                      years_experience=3, age=36)
-    alice = CrewMember(member_id="ALICE001", name="Alice Johnson",
-                       rank=Rank.OFFICER, specialization="Engineering",
-                       years_experience=8, age=36)
-    valid_mission = SpaceMission(mission_id="M2024_MARS",
-                                 mission_name="Mars Colony Establishment",
-                                 destination="Mars", duration_days=900,
-                                 crew=[sarah, john, alice],
-                                 budget_millions=2500.0)
-    print_info(valid_mission)
-    alex = CrewMember(member_id="ALEX001", name="Alex Johnson",
-                      rank=Rank.OFFICER, specialization="Engineering",
-                      years_experience=3, age=36)
+    print("Space Mission Crew Validation")
+    print("=========================================")
+    print("Valid mission created:")
+    try:
+        sarah = CrewMember(member_id="SARAH001", name="Sarah Connor",
+                           rank=Rank.COMMANDER,
+                           specialization="Mission Command",
+                           years_experience=8, age=30)
+        john = CrewMember(member_id="JOHN001", name="John Smith",
+                          rank=Rank.LIEUTENANT,
+                          specialization="Navigation",
+                          years_experience=3, age=36)
+        alice = CrewMember(member_id="ALICE001", name="Alice Johnson",
+                           rank=Rank.OFFICER,
+                           specialization="Engineering",
+                           years_experience=8, age=36)
+        valid_mission = SpaceMission(mission_id="M2024_MARS",
+                                     mission_name="Mars Colony Establishment",
+                                     destination="Mars", duration_days=900,
+                                     crew=[sarah, john, alice],
+                                     budget_millions=2500.0)
+        print_info(valid_mission)
+    except ValidationError as e:
+        print(e.errors()[0]['msg'])
+    print("\n=========================================")
+    print("Expected validation error:")
+    try:
+        alex = CrewMember(member_id="ALEX001", name="Alex Connor",
+                          rank=Rank.COMMANDER,
+                          specialization="Mission Command",
+                          years_experience=3, age=30)
+        remy = CrewMember(member_id="REMY001", name="Remy Smith",
+                          rank=Rank.LIEUTENANT,
+                          specialization="Navigation",
+                          years_experience=3, age=36)
+        david = CrewMember(member_id="DAVID001", name="David Johnson",
+                           rank=Rank.OFFICER,
+                           specialization="Engineering",
+                           years_experience=8, age=36)
+        valid_mission = SpaceMission(mission_id="M2024_MARS",
+                                     mission_name="Mars Colony Establishment",
+                                     destination="Mars", duration_days=900,
+                                     crew=[alex, remy, david],
+                                     budget_millions=2500.0)
+        print_info(valid_mission)
+    except ValidationError as e:
+        print(e.errors()[0]['msg'])
 
 
 if __name__ == "__main__":
