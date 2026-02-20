@@ -15,8 +15,7 @@ def main() -> None:
     print("\n=== Achievement Analytics ===")
     total = alice.union(bob, charlie)
     common = alice.intersection(bob, charlie)
-    rare = bob.difference(alice, charlie) | alice.difference(charlie, bob)\
-        | charlie.difference(alice, bob)
+    rare = bob.difference(alice, charlie) | alice.difference(charlie, bob) | charlie.difference(alice, bob)
     alice_bob = alice.intersection(bob)
     unique_alice = alice.difference(bob)
     unique_bob = bob.difference(alice)

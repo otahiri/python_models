@@ -31,7 +31,7 @@ def main() -> None:
         print(f"Status: {'not ' if not valid_station.is_operational else ''}\
 operational")
     except ValidationError as ve:
-        print(ve)
+        print(ve.errors()[0]['msg'])
     print("\n========================================")
     print("Expected validation error:")
     try:
@@ -40,8 +40,8 @@ operational")
                                        crew_size=60, power_level=85.5,
                                        oxygen_level=92.3, is_operational=True)
         print(invalid_station)
-    except ValidationError:
-        print("Input should be less than or equal to 20")
+    except ValidationError as ve:
+        print(ve.errors()[0]['msg'])
 
 
 if __name__ == "__main__":
