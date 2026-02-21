@@ -41,17 +41,17 @@ def memory_vault() -> dict[str, callable]:
     return {'store': store, 'recall': recall}
 
 
-def main():
+def main() -> None:
     print("\nTesting mage counter...")
     count = mage_counter()
     print(f"Call 1: {count()}")
     print(f"Call 2: {count()}")
     print(f"Call 3: {count()}")
     print("\nTesting enchantment factory...")
-    enchant = enchantment_factory("Flaming")
-    print(enchant("Sword"))
-    enchant = enchantment_factory("Frozen")
-    print(enchant("Shield"))
+    enchant_flame = enchantment_factory("Flaming")
+    enchant_frozen = enchantment_factory("Frozen")
+    print(enchant_flame("Sword"))
+    print(enchant_frozen("Shield"))
 
 
 if __name__ == "__main__":

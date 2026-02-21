@@ -20,13 +20,12 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 
 def partial_enchanter(base_enchantment: callable) -> dict[str, callable]:
-    res = {"fire_enchant":
-           functools.partial(base_enchantment, power=50, element="fire"),
-           "ice_enchant":
-           functools.partial(base_enchantment, power=50, element="ice"),
-           "lightning_enchant":
-           functools.partial(base_enchantment, power=50, element="lightning")}
-    return res
+    return {"fire_enchant":
+            functools.partial(base_enchantment, power=50, element="fire"),
+            "ice_enchant":
+            functools.partial(base_enchantment, power=50, element="ice"),
+            "lightning_enchant":
+            functools.partial(base_enchantment, power=50, element="lightning")}
 
 
 @functools.lru_cache()
@@ -53,10 +52,6 @@ def spell_dispatcher() -> callable:
     def _(param: list):
         return f"multi cast skill used {[spell for spell in param]}"
     return spell
-
-
-def enchat(power, element, target):
-    return f"enchat {target} with {element}{power}"
 
 
 def main() -> None:

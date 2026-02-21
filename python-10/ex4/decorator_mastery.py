@@ -16,7 +16,7 @@ def spell_timer(func: callable) -> callable:
 def power_validator(min_power: int) -> callable:
     def decorator(func: callable) -> callable:
         @functools.wraps(func)
-        def validate(*args, **kwargs) -> str:
+        def validate(*args: tuple, **kwargs: dict) -> str:
             power = kwargs.get('power')
             power = args[-1] if power is None else power
             if power < min_power:
@@ -61,7 +61,7 @@ def cast(spell: str) -> str:
     return f"{spell} cast!"
 
 
-def main():
+def main() -> None:
     print("\nTesting spell timer...")
     print(f"Result: {cast('fireball')}")
     print("\nTesting MageGuild...")
