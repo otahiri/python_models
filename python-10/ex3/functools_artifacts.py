@@ -60,11 +60,11 @@ def enchat(power, element, target):
 
 
 def main() -> None:
-    print("Testing spell reducer...")
+    print("\nTesting spell reducer...")
     print(f"Sum: {spell_reducer([10, 25, 30, 35], 'add')}")
     print(f"Product: {spell_reducer([240, 1000], 'multiply')}")
     print(f"Max: {spell_reducer([10, 3, 40, 2], 'max')}")
-    print("Testing memoized fibonacci...")
+    print("\nTesting memoized fibonacci...")
     print(f"Fib(10): {memoized_fibonacci(10)}")
     print(f"Fib(15): {memoized_fibonacci(15)}")
 

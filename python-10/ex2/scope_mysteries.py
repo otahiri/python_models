@@ -42,14 +42,13 @@ def memory_vault() -> dict[str, callable]:
 
 
 def main():
-    print("Testing mage counter...")
+    print("\nTesting mage counter...")
     count = mage_counter()
     print(f"Call 1: {count()}")
     print(f"Call 2: {count()}")
     print(f"Call 3: {count()}")
-    print("Testing enchantment factory...")
+    print("\nTesting enchantment factory...")
     enchant = enchantment_factory("Flaming")
-
     print(enchant("Sword"))
     enchant = enchantment_factory("Frozen")
     print(enchant("Shield"))
